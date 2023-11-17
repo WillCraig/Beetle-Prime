@@ -156,5 +156,7 @@ def search():
         return render_template('results.html', data=data)
 
 
-# run the application
-app.run(host='localhost', port=5000)
+
+if __name__ == '__main__':
+    # run the application
+    app.run(host='localhost', port=5000)

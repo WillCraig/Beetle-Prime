@@ -3,22 +3,27 @@ from flask_mysqldb import MySQL
 import MySQLdb.cursors
 import re
 
-app = Flask(__name__)
 
-# Change this to your secret key (can be anything, it's for extra protection)
+
+app = Flask(__name__)
+app.config["DEBUG"] = True
+
+
+
 app.secret_key = 'your secret key'
 
 # Enter your database connection details below
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'wreed6'
-app.config['MYSQL_PASSWORD'] = 'x'
-app.config['MYSQL_DB'] = 'wreed6'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'testDB'
+
 
 # Intialize MySQL
 mysql = MySQL(app)
 
 
-# http://localhost:5000/pythonlogin/ - the following will be our login page, which will use both GET and POST requests
+# http://localhost:5000/ - the following will be our login page, which will use both GET and POST requests
 @app.route('/', methods=['GET', 'POST'])
 def login():
     # Output message if something goes wrong...
@@ -50,7 +55,7 @@ def login():
     # http://localhost:5000/python/logout - this will be the logout page
 
 
-@app.route('/pythonlogin/logout')
+@app.route('/logout')
 def logout():
     # Remove session data, this will log the user out
     session.pop('loggedin', None)
@@ -61,7 +66,7 @@ def logout():
 
 
 # http://localhost:5000/pythinlogin/register - this will be the registration page, we need to use both GET and POST requests
-@app.route('/pythonlogin/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     # Output message if something goes wrong...
     msg = ''
@@ -97,7 +102,7 @@ def register():
 
 
 # http://localhost:5000/pythinlogin/home - this will be the home page, only accessible for loggedin users
-@app.route('/pythonlogin/home')
+@app.route('/home')
 def home():
     # Check if user is loggedin
     if 'loggedin' in session:
@@ -107,8 +112,9 @@ def home():
     return redirect(url_for('login'))
 
 
+
 # http://localhost:5000/pythinlogin/profile - this will be the profile page, only accessible for loggedin users
-@app.route('/pythonlogin/profile')
+@app.route('/profile')
 def profile():
     # Check if user is loggedin
     if 'loggedin' in session:
@@ -156,7 +162,5 @@ def search():
         return render_template('results.html', data=data)
 
 
-
-if __name__ == '__main__':
-    # run the application
-    app.run(host='localhost', port=5000)
+# run the application
+app.run(host='localhost', port=5000)

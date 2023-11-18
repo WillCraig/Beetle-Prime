@@ -39,18 +39,9 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-
         account = Account.query.filter_by(username=username, password=password).first()
 
-        #
-        # # Check if account exists using MySQL
-        # cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        # cursor.execute('SELECT * FROM accounts WHERE username = %s AND password = %s', (username, password,))
-        # # Fetch one record and return result
-        # account = cursor.fetchone()
-
         print(account)
-
 
         # If account exists in accounts table in out database
         if account:
@@ -63,14 +54,13 @@ def login():
             # Redirect to home page
             return redirect(url_for('home'))
         else:
-            # Account doesnt exist or username/password incorrect
+            # Account doesn't exist or username/password incorrect
             msg = 'Incorrect username/password!'
     # Show the login form with message (if any)
     return render_template('index.html', msg=msg)
 
-    # http://localhost:5000/python/logout - this will be the logout page
 
-
+# http://localhost:5000/python/logout - this will be the logout page
 @app.route('/logout')
 def logout():
     # Remove session data, this will log the user out
@@ -81,25 +71,20 @@ def logout():
     return redirect(url_for('login'))
 
 
-# http://localhost:5000/pythinlogin/register - this will be the registration page, we need to use both GET and POST requests
+# http://localhost:5000/register - this will be the registration page, we need to use both GET and POST requests
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     # Output message if something goes wrong...
     msg = ''
     # Check if "username", "password" and "email" POST requests exist (user submitted form)
-    if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form:
+    if (request.method == 'POST' and 'username' in request.form and 'password' in
+            request.form and 'email' in request.form):
         # Create variables for easy access
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
 
-        # Check if account exists using MySQL
-        # cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        # cursor.execute('SELECT * FROM accounts WHERE username = %s', (username,))
-        # account = cursor.fetchone()
         account = Account.query.filter_by(username=username).first()
-
-
 
         # If account exists show error and validation checks
         if account:
@@ -111,16 +96,11 @@ def register():
         elif not username or not password or not email:
             msg = 'Please fill out the form!'
         else:
-
-            # Account doesnt exists and the form data is valid, now insert new account into accounts table
-            # cursor.execute('INSERT INTO accounts VALUES (NULL, %s, %s, %s)', (username, password, email,))
-            # mysql.connection.commit()
-
+            # account doesn't exist, add to db
             account = Account(username=username, password=password, email=email)
             db.session.add(account)
             db.session.commit()
             msg = 'You have successfully registered!'
-
 
     elif request.method == 'POST':
         # Form is empty... (no POST data)
@@ -145,15 +125,9 @@ def home():
 def profile():
     # Check if user is loggedin
     if 'loggedin' in session:
-
-
         # We need all the account info for the user so we can display it on the profile page
-        # cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        # cursor.execute('SELECT * FROM accounts WHERE id = %s', (session['id'],))
-        # account = cursor.fetchone()
 
         account = Account.query.filter_by(id=session['id']).first()
-
 
         # Show the profile page with account info
         return render_template('profile.html', account=account)
@@ -183,16 +157,13 @@ def search():
         name = request.form['name']
         id = request.form['id']
 
-        # cursor = mysql.connection.cursor()
+        results = None
+
         if name:
             results = Instructor.query.filter_by(name=name).all()
-            # cursor.execute("SELECT * from instructor where name = %s", [name])
+
         if id:
             results = Instructor.query.filter_by(id=id).all()
-            # cursor.execute("SELECT * from instructor where ID = %s", [id])
-        # mysql.connection.commit()
-        # data = cursor.fetchall()
-        # cursor.close()
 
         data = results
 
@@ -200,7 +171,6 @@ def search():
             print(i)
         # return f"Done!! Query Result is {data}"
         return render_template('results.html', data=data)
-
 
 
 if __name__ == '__main__':

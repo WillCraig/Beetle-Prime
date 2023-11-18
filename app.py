@@ -1,19 +1,24 @@
 from flask import Flask, redirect, render_template, request, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 import re
-from dotenv import dotenv_values
 
-config = dotenv_values(".env")
+import os
+from dotenv import dotenv_values, load_dotenv
+load_dotenv()
+# config = dotenv_values(".env")
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
 
 app.secret_key = 'annoying'
 
-USERNAME = config['USERNAME']
-PASSWORD = config['PASSWORD'] if config['PASSWORD'] != "w" else ""
-HOSTNAME = config['HOSTNAME']
-DATABASE = config['DATABASENAME']
+
+USERNAME = os.environ.get("USERNAME")
+PASSWORD = os.environ.get("PASSWORD") if os.environ.get("PASSWORD") != "w" else ""
+HOSTNAME = os.environ.get("HOSTNAME")
+DATABASE = os.environ.get("DATABASENAME")
+
+
 
 
 SQLALCHEMY_DATABASE_URI = f"mysql+mysqlconnector://{USERNAME}:{PASSWORD}@{HOSTNAME}/{DATABASE}"

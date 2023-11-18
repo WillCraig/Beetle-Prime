@@ -1,18 +1,29 @@
 from flask import Flask, redirect, render_template, request, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 import re
+from dotenv import dotenv_values
+
+config = dotenv_values(".env")
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
 
 app.secret_key = 'annoying'
 
-SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
-    username="root",
-    password="",
-    hostname="localhost",
-    databasename="testDB",
-)
+USERNAME = config['USERNAME']
+PASSWORD = config['PASSWORD'] if config['PASSWORD'] != "w" else ""
+HOSTNAME = config['HOSTNAME']
+DATABASE = config['DATABASENAME']
+
+
+SQLALCHEMY_DATABASE_URI = f"mysql+mysqlconnector://{USERNAME}:{PASSWORD}@{HOSTNAME}/{DATABASE}"
+#
+# SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
+#     username="root",
+#     password="",
+#     hostname="localhost",
+#     databasename="testDB",
+# )
 app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
 app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -29,6 +40,24 @@ class Account(db.Model):
     email = db.Column(db.String(50), nullable=False)
 
 
+
+# Customer Model
+class Customer(db.Model):
+    customer_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String(50), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(50), nullable=False)
+    street = db.Column(db.String(100), nullable=False)
+    city = db.Column(db.String(50), nullable=False)
+    zipcode = db.Column(db.Integer, nullable=False)
+
+
+
+
+
+
+
+
 @app.route('/', methods=['GET', 'POST'])
 def login():
     # Output message if something goes wrong...
@@ -39,9 +68,9 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        account = Account.query.filter_by(username=username, password=password).first()
 
-        print(account)
+        #account = Account.query.filter_by(username=username, password=password).first()
+        account = Customer.query.filter_by(username=username, password=password).first()
 
         # If account exists in accounts table in out database
         if account:
@@ -49,7 +78,7 @@ def login():
             session['loggedin'] = True
             # session['id'] = account['id']
             # session['username'] = account['username']
-            session['id'] = account.id
+            session['id'] = account.customer_id
             session['username'] = account.username
             # Redirect to home page
             return redirect(url_for('home'))
@@ -78,13 +107,17 @@ def register():
     msg = ''
     # Check if "username", "password" and "email" POST requests exist (user submitted form)
     if (request.method == 'POST' and 'username' in request.form and 'password' in
-            request.form and 'email' in request.form):
+            request.form and 'email' in request.form and 'street' in request.form and 'city' in request.form and 'zipcode' in request.form):
         # Create variables for easy access
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
+        street = request.form['street']
+        city = request.form['city']
+        zipcode = request.form['zipcode']
 
-        account = Account.query.filter_by(username=username).first()
+        # account = Account.query.filter_by(username=username).first()
+        account = Customer.query.filter_by(username=username).first()
 
         # If account exists show error and validation checks
         if account:
@@ -93,11 +126,13 @@ def register():
             msg = 'Invalid email address!'
         elif not re.match(r'[A-Za-z0-9]+', username):
             msg = 'Username must contain only characters and numbers!'
-        elif not username or not password or not email:
+        elif not username or not password or not email or not street or not city or not zipcode:
             msg = 'Please fill out the form!'
         else:
             # account doesn't exist, add to db
-            account = Account(username=username, password=password, email=email)
+            # account = Account(username=username, password=password, email=email)
+            account = Customer(username=username, password=password, email=email, street=street, city=city, zipcode=zipcode)
+
             db.session.add(account)
             db.session.commit()
             msg = 'You have successfully registered!'
@@ -127,7 +162,8 @@ def profile():
     if 'loggedin' in session:
         # We need all the account info for the user so we can display it on the profile page
 
-        account = Account.query.filter_by(id=session['id']).first()
+        # account = Account.query.filter_by(id=session['id']).first()
+        account = Customer.query.filter_by(id=session['id']).first()
 
         # Show the profile page with account info
         return render_template('profile.html', account=account)

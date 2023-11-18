@@ -5,30 +5,13 @@ import re
 import os
 from dotenv import dotenv_values, load_dotenv
 load_dotenv()
-# config = dotenv_values(".env")
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
-
-app.secret_key = 'annoying'
-
-
-USERNAME = os.environ.get("USERNAME")
-PASSWORD = os.environ.get("PASSWORD") if os.environ.get("PASSWORD") != "w" else ""
-HOSTNAME = os.environ.get("HOSTNAME")
-DATABASE = os.environ.get("DATABASENAME")
-
-
-
-
-SQLALCHEMY_DATABASE_URI = f"mysql+mysqlconnector://{USERNAME}:{PASSWORD}@{HOSTNAME}/{DATABASE}"
 #
-# SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
-#     username="root",
-#     password="",
-#     hostname="localhost",
-#     databasename="testDB",
-# )
+app.secret_key = os.environ.get("APP_SECRETKEY")
+SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")
+
 app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
 app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False

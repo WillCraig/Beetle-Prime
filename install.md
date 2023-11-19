@@ -21,8 +21,6 @@ exit()
 create a file in the same directory as app.py ".env" no name just the .env extension
 add the following to the .env file:
 ```
-USERNAME=root
-PASSWORD=w
-HOSTNAME=localhost
-DATABASENAME=testDB
+SQLALCHEMY_DATABASE_URI=mysql+mysqlconnector://root:@localhost/testDB
+APP_SECRETKEY=secret
 ```

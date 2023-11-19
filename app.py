@@ -1,9 +1,10 @@
-from flask import Flask, redirect, render_template, request, url_for, session
-from flask_sqlalchemy import SQLAlchemy
+import os
 import re
 
-import os
 from dotenv import load_dotenv
+from flask import Flask, redirect, render_template, request, url_for, session
+from flask_sqlalchemy import SQLAlchemy
+
 load_dotenv()
 
 app = Flask(__name__)
@@ -19,8 +20,6 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 
-
-
 # Customer Model
 class Customer(db.Model):
     customer_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -31,6 +30,7 @@ class Customer(db.Model):
     city = db.Column(db.String(50), nullable=False)
     zipcode = db.Column(db.Integer, nullable=False)
 
+
 # Order Model
 class Order(db.Model):
     order_num = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -40,12 +40,15 @@ class Order(db.Model):
     price_total = db.Column(db.Integer, nullable=False)
     customer = db.relationship('Customer', backref=db.backref('orders', lazy=True))
 
+
 # # Order_Items Model
 class OrderItems(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     order_num = db.Column(db.Integer, db.ForeignKey('order.order_num'), nullable=False)
     item = db.Column(db.String(50), nullable=False)
     order = db.relationship('Order', backref=db.backref('items', lazy=True))
+
+
 # Product Model
 class Product(db.Model):
     product_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -55,6 +58,7 @@ class Product(db.Model):
     price = db.Column(db.DECIMAL(8, 2), nullable=False)
     product_quantity = db.Column(db.Integer, nullable=False)
     seller = db.relationship('Seller', backref=db.backref('products', lazy=True))
+
 
 # Product_Image Model
 # class ProductImage(db.Model):
@@ -68,17 +72,13 @@ class ProductImage(db.Model):
     product = db.relationship('Product', backref=db.backref('images', lazy=True))
 
 
-
-
-
-
-
 # Purchase Model
 class Purchase(db.Model):
     order_num = db.Column(db.Integer, db.ForeignKey('order.order_num'), nullable=False, primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('product.product_id'), nullable=False, primary_key=True)
     order = db.relationship('Order', backref=db.backref('purchases', lazy=True))
     product = db.relationship('Product', backref=db.backref('purchases', lazy=True))
+
 
 # Seller Model
 class Seller(db.Model):
@@ -91,10 +91,6 @@ class Seller(db.Model):
     zipcode = db.Column(db.Integer, nullable=False)
 
 
-
-
-
-
 @app.route('/', methods=['GET', 'POST'])
 def login():
     # Output message if something goes wrong...
@@ -105,8 +101,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-
-        #account = Account.query.filter_by(username=username, password=password).first()
+        # account = Account.query.filter_by(username=username, password=password).first()
         account = Customer.query.filter_by(username=username, password=password).first()
 
         # If account exists in accounts table in out database
@@ -143,8 +138,7 @@ def register():
     # Output message if something goes wrong...
     msg = ''
     # Check if "username", "password" and "email" POST requests exist (user submitted form)
-    if (request.method == 'POST' and 'username' in request.form and 'password' in
-            request.form and 'email' in request.form and 'street' in request.form and 'city' in request.form and 'zipcode' in request.form):
+    if (request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form and 'street' in request.form and 'city' in request.form and 'zipcode' in request.form):
         # Create variables for easy access
         username = request.form['username']
         password = request.form['password']
@@ -168,7 +162,8 @@ def register():
         else:
             # account doesn't exist, add to db
             # account = Account(username=username, password=password, email=email)
-            account = Customer(username=username, password=password, email=email, street=street, city=city, zipcode=zipcode)
+            account = Customer(username=username, password=password, email=email, street=street, city=city,
+                               zipcode=zipcode)
 
             db.session.add(account)
             db.session.commit()
@@ -197,7 +192,7 @@ def home():
 def profile():
     # Check if user is loggedin
     if 'loggedin' in session:
-        # We need all the account info for the user so we can display it on the profile page
+        # We need all the account info for the user, so we can display it on the profile page
 
         # account = Account.query.filter_by(id=session['id']).first()
         account = Customer.query.filter_by(id=session['id']).first()

@@ -60,11 +60,6 @@ class Product(db.Model):
     seller = db.relationship('Seller', backref=db.backref('products', lazy=True))
 
 
-# Product_Image Model
-# class ProductImage(db.Model):
-#     product_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     image_url = db.Column(db.String(50), nullable=False)
-#     product = db.relationship('Product', backref=db.backref('images', lazy=True))
 class ProductImage(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     product_id = db.Column(db.Integer, db.ForeignKey('product.product_id'), nullable=False)
@@ -101,15 +96,12 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        # account = Account.query.filter_by(username=username, password=password).first()
         account = Customer.query.filter_by(username=username, password=password).first()
 
         # If account exists in accounts table in out database
         if account:
             # Create session data, we can access this data in other routes
             session['loggedin'] = True
-            # session['id'] = account['id']
-            # session['username'] = account['username']
             session['id'] = account.customer_id
             session['username'] = account.username
             # Redirect to home page
@@ -147,7 +139,6 @@ def register():
         city = request.form['city']
         zipcode = request.form['zipcode']
 
-        # account = Account.query.filter_by(username=username).first()
         account = Customer.query.filter_by(username=username).first()
 
         # If account exists show error and validation checks
@@ -160,8 +151,6 @@ def register():
         elif not username or not password or not email or not street or not city or not zipcode:
             msg = 'Please fill out the form!'
         else:
-            # account doesn't exist, add to db
-            # account = Account(username=username, password=password, email=email)
             account = Customer(username=username, password=password, email=email, street=street, city=city,
                                zipcode=zipcode)
 
@@ -194,7 +183,6 @@ def profile():
     if 'loggedin' in session:
         # We need all the account info for the user, so we can display it on the profile page
 
-        # account = Account.query.filter_by(id=session['id']).first()
         account = Customer.query.filter_by(id=session['id']).first()
 
         # Show the profile page with account info
@@ -228,11 +216,11 @@ def search():
         results = None
 
         if name:
-            results = Instructor.query.filter_by(name=name).all()
-
+            # results = Instructor.query.filter_by(name=name).all()
+            pass
         if id:
-            results = Instructor.query.filter_by(id=id).all()
-
+            # results = Instructor.query.filter_by(id=id).all()
+            pass
         data = results
 
         for i in data:

@@ -6,7 +6,7 @@
 		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 	</head>
-	<body>
+	<body class="bg">
 		<div class="register">
 			<h1>Register to be a Seller!</h1>
 			<div class="links">
@@ -35,6 +35,10 @@
 					<i class="fas fa-city"></i>
 				</label>
 				<input type="text" name="city" placeholder="City" id="city" required>
+				<label for="state">
+					<i class="fas fa-city"></i>
+				</label>
+				<input type="text" name="state" placeholder="State" id="state" required>
 				<label for="zipcode">
 					<i class="fas fa-mail-bulk"></i>
 				</label>

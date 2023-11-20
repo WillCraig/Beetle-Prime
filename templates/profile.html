@@ -5,7 +5,8 @@
 {% block content %}
 <h2>Profile Page</h2>
 <div>
-    <p>Your account details are below:</p>
+    {% if session['usertype'] == "seller" %}
+    <p>Your Seller Account details are below:</p>
     <table>
         <tr>
             <td>Username:</td>
@@ -19,6 +20,35 @@
             <td>Email:</td>
             <td>{{ seller['email'] }}</td>
         </tr>
+        <tr>
+            <td>Shipping Address: </td>
+            <td>{{ seller['street'] }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>{{ seller['city'] }}, {{ seller['state'] }} {{ seller['zipcode'] }}</td>
+        </tr>
     </table>
+    {% elif session['usertype'] == "customer" %}
+    <p>Your Customer Account details are below:</p>
+    <table>
+        <tr>
+            <td>Username:</td>
+            <td>{{ customer['username'] }}</td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td>{{ customer['password'] }}</td>
+        </tr>
+        <tr>
+            <td>Shipping Address: </td>
+            <td>{{ customer['street'] }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>{{ customer['city'] }}, {{ customer['state'] }} {{ customer['zipcode'] }}</td>
+        </tr>
+    </table>
+    {% endif %}
 </div>
 {% endblock %}

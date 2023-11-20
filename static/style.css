@@ -146,6 +146,5 @@ body.loggedin {
   margin: 0 0 10px 0;
 }
 .bg { 
-    height: 30em;
-    width: 30em;
+    background-image: url("BotW_Beedle_Model.png");
   }

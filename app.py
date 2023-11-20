@@ -29,6 +29,7 @@ class Customer(db.Model):
     email = db.Column(db.String(50), nullable=False)
     street = db.Column(db.String(100), nullable=False)
     city = db.Column(db.String(50), nullable=False)
+    state = db.Column(db.String(50), nullable=False)
     zipcode = db.Column(db.Integer, nullable=False)
 
 # Order Model
@@ -83,6 +84,7 @@ class Seller(db.Model):
     email = db.Column(db.String(50), nullable=False)
     street = db.Column(db.String(100), nullable=False)
     city = db.Column(db.String(50), nullable=False)
+    state = db.Column(db.String(50), nullable=False)
     zipcode = db.Column(db.Integer, nullable=False)
 
 # -------------------------------------------------------------------------------------------------------------
@@ -104,6 +106,7 @@ def login():
             session['loggedin'] = True
             session['id'] = account.customer_id
             session['username'] = account.username
+            session['usertype'] = "customer"
             # Redirect to home page
             return redirect(url_for('home'))
         
@@ -114,6 +117,7 @@ def login():
             session['loggedin'] = True
             session['id'] = account.seller_id
             session['username'] = account.name
+            session['usertype'] = "seller"
             # Redirect to home page
             return redirect(url_for('home'))
         else:
@@ -130,6 +134,7 @@ def logout():
     session.pop('loggedin', None)
     session.pop('id', None)
     session.pop('username', None)
+    session.pop('usertype', None)
     # Redirect to login page
     return redirect(url_for('login'))
 
@@ -141,13 +146,14 @@ def register():
     msg = ''
     # Check if "username", "password" and "email" POST requests exist (user submitted form)
     if (request.method == 'POST' and 'username' in request.form and 'password' in
-            request.form and 'email' in request.form and 'street' in request.form and 'city' in request.form and 'zipcode' in request.form):
+            request.form and 'email' in request.form and 'street' in request.form and 'city' in request.form and 'state' in request.form and 'zipcode' in request.form):
         # Create variables for easy access
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
         street = request.form['street']
         city = request.form['city']
+        state = request.form['state']
         zipcode = request.form['zipcode']
 
         account = Customer.query.filter_by(username=username).first()
@@ -159,11 +165,11 @@ def register():
             msg = 'Invalid email address!'
         elif not re.match(r'[A-Za-z0-9]+', username):
             msg = 'Username must contain only characters and numbers!'
-        elif not username or not password or not email or not street or not city or not zipcode:
+        elif not username or not password or not email or not street or not city or not state or not zipcode:
             msg = 'Please fill out the form!'
         else:
             # account doesn't exist, add to db
-            account = Customer(username=username, password=password, email=email, street=street, city=city, zipcode=zipcode)
+            account = Customer(username=username, password=password, email=email, street=street, city=city, state = state, zipcode=zipcode)
 
             db.session.add(account)
             db.session.commit()
@@ -181,13 +187,14 @@ def sellerregister():
     msg = ''
     # Check if "username", "password" and "email" POST requests exist (user submitted form)
     if (request.method == 'POST' and 'name' in request.form and 'password' in
-            request.form and 'email' in request.form and 'street' in request.form and 'city' in request.form and 'zipcode' in request.form):
+            request.form and 'email' in request.form and 'street' in request.form and 'city' in request.form and 'state' in request.form and 'zipcode' in request.form):
         # Create variables for easy access
         name = request.form['name']
         password = request.form['password']
         email = request.form['email']
         street = request.form['street']
         city = request.form['city']
+        state = request.form['state']
         zipcode = request.form['zipcode']
 
         account = Seller.query.filter_by(name=name).first()
@@ -199,11 +206,11 @@ def sellerregister():
             msg = 'Invalid email address!'
         elif not re.match(r'[A-Za-z0-9]+', name):
             msg = 'Username must contain only characters and numbers!'
-        elif not name or not password or not email or not street or not city or not zipcode:
+        elif not name or not password or not email or not street or not city or not state or not zipcode:
             msg = 'Please fill out the form!'
         else:
             # account doesn't exist, add to db
-            account = Seller(name=name, password=password, email=email, street=street, city=city, zipcode=zipcode)
+            account = Seller(name=name, password=password, email=email, street=street, city=city, state = state, zipcode=zipcode)
 
             db.session.add(account)
             db.session.commit()
@@ -222,8 +229,12 @@ def home():
     # Check if user is loggedin
     if 'loggedin' in session:
         # User is loggedin show them the home page
-        return render_template('home.html', username=session['username'])
+       # return render_template('home.html', username=session['username'])
     # User is not loggedin redirect to login page
+
+        #if session['usertype'] == "customer":
+            return render_template('home.html', username=session['username'])
+
     return redirect(url_for('login'))
 
 
@@ -235,10 +246,16 @@ def profile():
         # We need all the account info for the user so we can display it on the profile page
 
         # account = Account.query.filter_by(id=session['id']).first()
-        account = Seller.query.filter_by(seller_id=session['id']).first()
+        if session['usertype'] == "customer":
+            account = Customer.query.filter_by(customer_id=session['id']).first()
+            return render_template('profile.html', customer=account)
+
+        elif session['usertype'] == "seller":
+            account = Seller.query.filter_by(seller_id=session['id']).first()
+            return render_template('profile.html', seller=account)
 
         # Show the profile page with account info
-        return render_template('profile.html', seller=account)
+        #return render_template('profile.html', seller=account)
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 

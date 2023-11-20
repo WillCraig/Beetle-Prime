@@ -2,23 +2,23 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Customer Register</title>
+		<title>Seller Register</title>
 		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 	</head>
 	<body>
 		<div class="register">
-			<h1>Register to be a Customer!</h1>
+			<h1>Register to be a Seller!</h1>
 			<div class="links">
 				<a href="{{ url_for('login') }}">Login</a>
-				<a href="{{ url_for('register') }}" class="active">Customer Register</a>
-				<a href="{{ url_for('sellerregister') }}">Seller Register</a>
+				<a href="{{ url_for('register') }}" >Customer Register</a>
+				<a href="{{ url_for('sellerregister') }}" class="active">Seller Register</a>
 			</div>
-			<form action="{{ url_for('register') }}" method="post" autocomplete="off">
-				<label for="username">
+			<form action="{{ url_for('sellerregister') }}" method="post" autocomplete="off">
+				<label for="name">
 					<i class="fas fa-user"></i>
 				</label>
-				<input type="text" name="username" placeholder="Username" id="username" required>
+				<input type="text" name="name" placeholder="name" id="name" required>
 				<label for="password">
 					<i class="fas fa-lock"></i>
 				</label>

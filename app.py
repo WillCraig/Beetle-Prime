@@ -19,7 +19,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 
-
+# -------------------------------------------------------------------------------------------------------
 
 # Customer Model
 class Customer(db.Model):
@@ -61,17 +61,12 @@ class Product(db.Model):
 #     product_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 #     image_url = db.Column(db.String(50), nullable=False)
 #     product = db.relationship('Product', backref=db.backref('images', lazy=True))
+
 class ProductImage(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     product_id = db.Column(db.Integer, db.ForeignKey('product.product_id'), nullable=False)
     image_url = db.Column(db.String(50), nullable=False)
     product = db.relationship('Product', backref=db.backref('images', lazy=True))
-
-
-
-
-
-
 
 # Purchase Model
 class Purchase(db.Model):
@@ -90,10 +85,7 @@ class Seller(db.Model):
     city = db.Column(db.String(50), nullable=False)
     zipcode = db.Column(db.Integer, nullable=False)
 
-
-
-
-
+# -------------------------------------------------------------------------------------------------------------
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
@@ -105,18 +97,23 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-
-        #account = Account.query.filter_by(username=username, password=password).first()
         account = Customer.query.filter_by(username=username, password=password).first()
-
-        # If account exists in accounts table in out database
+        # If Customer account exists in accounts table in out database
         if account:
             # Create session data, we can access this data in other routes
             session['loggedin'] = True
-            # session['id'] = account['id']
-            # session['username'] = account['username']
             session['id'] = account.customer_id
             session['username'] = account.username
+            # Redirect to home page
+            return redirect(url_for('home'))
+        
+        account = Seller.query.filter_by(name=username, password=password).first()
+        # If Seller account exists in accounts table in out database
+        if account:
+            # Create session data, we can access this data in other routes
+            session['loggedin'] = True
+            session['id'] = account.seller_id
+            session['username'] = account.name
             # Redirect to home page
             return redirect(url_for('home'))
         else:
@@ -153,7 +150,6 @@ def register():
         city = request.form['city']
         zipcode = request.form['zipcode']
 
-        # account = Account.query.filter_by(username=username).first()
         account = Customer.query.filter_by(username=username).first()
 
         # If account exists show error and validation checks
@@ -167,7 +163,6 @@ def register():
             msg = 'Please fill out the form!'
         else:
             # account doesn't exist, add to db
-            # account = Account(username=username, password=password, email=email)
             account = Customer(username=username, password=password, email=email, street=street, city=city, zipcode=zipcode)
 
             db.session.add(account)
@@ -179,6 +174,46 @@ def register():
         msg = 'Please fill out the form!'
     # Show registration form with message (if any)
     return render_template('register.html', msg=msg)
+
+@app.route('/sellerregister', methods=['GET', 'POST'])
+def sellerregister():
+    # Output message if something goes wrong...
+    msg = ''
+    # Check if "username", "password" and "email" POST requests exist (user submitted form)
+    if (request.method == 'POST' and 'name' in request.form and 'password' in
+            request.form and 'email' in request.form and 'street' in request.form and 'city' in request.form and 'zipcode' in request.form):
+        # Create variables for easy access
+        name = request.form['name']
+        password = request.form['password']
+        email = request.form['email']
+        street = request.form['street']
+        city = request.form['city']
+        zipcode = request.form['zipcode']
+
+        account = Seller.query.filter_by(name=name).first()
+
+        # If account exists show error and validation checks
+        if account:
+            msg = 'Account already exists!'
+        elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+            msg = 'Invalid email address!'
+        elif not re.match(r'[A-Za-z0-9]+', name):
+            msg = 'Username must contain only characters and numbers!'
+        elif not name or not password or not email or not street or not city or not zipcode:
+            msg = 'Please fill out the form!'
+        else:
+            # account doesn't exist, add to db
+            account = Seller(name=name, password=password, email=email, street=street, city=city, zipcode=zipcode)
+
+            db.session.add(account)
+            db.session.commit()
+            msg = 'You have successfully registered!'
+
+    elif request.method == 'POST':
+        # Form is empty... (no POST data)
+        msg = 'Please fill out the form!'
+    # Show registration form with message (if any)
+    return render_template('sellerregister.html', msg=msg)
 
 
 # http://localhost:5000/pythinlogin/home - this will be the home page, only accessible for loggedin users
@@ -200,10 +235,10 @@ def profile():
         # We need all the account info for the user so we can display it on the profile page
 
         # account = Account.query.filter_by(id=session['id']).first()
-        account = Customer.query.filter_by(id=session['id']).first()
+        account = Seller.query.filter_by(seller_id=session['id']).first()
 
         # Show the profile page with account info
-        return render_template('profile.html', account=account)
+        return render_template('profile.html', seller=account)
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
@@ -247,5 +282,4 @@ def search():
 
 
 if __name__ == '__main__':
-    db.create_all()
     app.run(debug=True)

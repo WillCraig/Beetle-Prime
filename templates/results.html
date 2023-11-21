@@ -5,7 +5,7 @@
 {% block content %}
 <h2>Product search results: {{ msg }}</h2>
 <table border="1" cellpadding="5" cellspacing="5">
-    <tr><th>Product ID</th><th>Seller ID</th><th>Product Name</th><th>Description</th><th>Price</th><th>Quantity</th></tr>
+    <tr><th>Product ID</th><th>Seller ID</th><th>Product Name</th><th>Description</th><th>Price</th><th>Quantity</th><th>Product Image</th></tr>
     {% for row in data %}
     <tr>
         <td>{{row.product_id}}</td>
@@ -14,6 +14,11 @@
         <td>{{row.description}}</td>
         <td>{{row.price}}</td>
         <td>{{row.product_quantity}}</td>
+        {% if os.path.exists('./static/productphotos/' + row.name + '.jpg') %}
+         <td><img src="{{url_for('static', filename='/productphotos/' + row.name + '.jpg')}}" width="20%"/></td>
+         {% else %}
+        <td><img src="{{url_for('static', filename='/productphotos/RainbowRoad Question Mark.png')}}" width="20%"/></td>
+         {% endif %}
     </tr>
     {% endfor %}
     </table>

@@ -164,6 +164,7 @@ def profile():
             account = Seller.query.filter_by(seller_id=session['id']).first()
             return render_template('profile.html', seller=account)
         
+
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
@@ -255,6 +256,16 @@ def addproduct():
 
 
 
+
+
+@app.route('/product_details/<p_id>', methods=['GET', 'POST'])
+def product_details(p_id):
+    product = Product.query.get(p_id)
+    if product:
+        return render_template('product_details.html', product=product)
+    else:
+        # Handle product not found, redirect to an error page, or return an error message.
+        return render_template('home.html', username=session['username'])
 
 
 

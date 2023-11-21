@@ -1,7 +1,11 @@
-import re
+import re, os
 from modules.globals import app, db
 from flask import Flask, redirect, render_template, request, url_for, session
 from modules.schema import Customer, Seller, Product
+@app.context_processor
+def handle_context():
+    return dict(os=os)
+
 
 # Login page
 @app.route('/', methods=['GET', 'POST'])

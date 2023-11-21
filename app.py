@@ -1,7 +1,7 @@
 import re
 from modules.globals import app, db
 from flask import Flask, redirect, render_template, request, url_for, session
-from modules.schema import Customer, Seller, Product, ProductImage
+from modules.schema import Customer, Seller, Product
 
 # Login page
 @app.route('/', methods=['GET', 'POST'])

@@ -264,44 +264,5 @@ def profile():
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
-
-@app.route('/searchform')
-def searchform():
-    # Check if user is loggedin, return redirect to login page if not
-    if 'loggedin' not in session:
-        return redirect(url_for('login'))
-    else:
-        return render_template('form.html', username=session['username'])
-
-
-@app.route('/search', methods=['POST', 'GET'])
-def search():
-    # Check if user is loggedin, return redirect to login page if not
-    if 'loggedin' not in session:
-        return redirect(url_for('login'))
-
-    if request.method == 'GET':
-        return "Fill out the Search Form"
-
-    if request.method == 'POST':
-        name = request.form['name']
-        id = request.form['id']
-
-        results = None
-
-        if name:
-            # results = Instructor.query.filter_by(name=name).all()
-            pass
-        if id:
-            # results = Instructor.query.filter_by(id=id).all()
-            pass
-        data = results
-
-        for i in data:
-            print(i)
-        # return f"Done!! Query Result is {data}"
-        return render_template('results.html', data=data)
-
-
 if __name__ == '__main__':
     app.run(debug=True)

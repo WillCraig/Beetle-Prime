@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+
+{% block title %}Seller Home{% endblock %}
+
+{% block content %}
+<h2>Seller Home Page</h2>
+<p>Welcome back, {{ username }}!</p>
+<a href="{{ url_for('addproduct') }}">Click to add Products</a>
+<p></p>
+<p1> Your Products Listed</p1>
+<table border="1" cellpadding="5" cellspacing="5">
+    <tr><th>Product ID</th><th>Product Name</th><th>Description</th><th>Price</th><th>Quantity</th></tr>
+    {% for row in data %}
+    <tr>
+        <td>{{row.product_id}}</td>
+        <td>{{row.name}}</td>
+        <td>{{row.description}}</td>
+        <td>{{row.price}}</td>
+        <td>{{row.product_quantity}}</td>
+    </tr>
+    {% endfor %}
+    </table>
+{% endblock %}

@@ -3,12 +3,13 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h2>Faculty Search Page</h2>
-<p>Hi, {{ username }} fill out the form below to search for faculty.</p>
+<h2>Product Search Page</h2>
+<p>Hi, {{ username }} fill out the form below to search for Products.</p>
 <form action="/search" method = "POST">
-	<p><h2>Faculty Search:</h2> 
-	<p>Name <input type="text" name = "name" /></p>
-	<p>ID <input type = "integer" name = "id" /></p>
+	<p><h2>Product Search:</h2> 
+	<p>Proudct Name <input type="text" name = "name" /></p>
+	<p>Product ID <input type = "integer" name = "product_id" /></p>
+	<p>Seller ID <input type = "integer" name = "seller_id" /></p>
 	<p><input type = "submit" value = "Submit" /></p>
 </form>
 {% endblock %}

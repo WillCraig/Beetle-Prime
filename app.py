@@ -57,18 +57,6 @@ class Product(db.Model):
     product_quantity = db.Column(db.Integer, nullable=False)
     seller = db.relationship('Seller', backref=db.backref('products', lazy=True))
 
-# Product_Image Model
-# class ProductImage(db.Model):
-#     product_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     image_url = db.Column(db.String(50), nullable=False)
-#     product = db.relationship('Product', backref=db.backref('images', lazy=True))
-
-class ProductImage(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    product_id = db.Column(db.Integer, db.ForeignKey('product.product_id'), nullable=False)
-    image_url = db.Column(db.String(50), nullable=False)
-    product = db.relationship('Product', backref=db.backref('images', lazy=True))
-
 # Purchase Model
 class Purchase(db.Model):
     order_num = db.Column(db.Integer, db.ForeignKey('order.order_num'), nullable=False, primary_key=True)
@@ -88,7 +76,7 @@ class Seller(db.Model):
     zipcode = db.Column(db.Integer, nullable=False)
 
 # -------------------------------------------------------------------------------------------------------------
-
+# Login page
 @app.route('/', methods=['GET', 'POST'])
 def login():
     # Output message if something goes wrong...
@@ -126,8 +114,7 @@ def login():
     # Show the login form with message (if any)
     return render_template('index.html', msg=msg)
 
-
-# http://localhost:5000/python/logout - this will be the logout page
+# Logout Page
 @app.route('/logout')
 def logout():
     # Remove session data, this will log the user out
@@ -138,8 +125,7 @@ def logout():
     # Redirect to login page
     return redirect(url_for('login'))
 
-
-# http://localhost:5000/register - this will be the registration page, we need to use both GET and POST requests
+# Customer Register
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     # Output message if something goes wrong...
@@ -181,6 +167,7 @@ def register():
     # Show registration form with message (if any)
     return render_template('register.html', msg=msg)
 
+# Seller Register
 @app.route('/sellerregister', methods=['GET', 'POST'])
 def sellerregister():
     # Output message if something goes wrong...
@@ -222,30 +209,26 @@ def sellerregister():
     # Show registration form with message (if any)
     return render_template('sellerregister.html', msg=msg)
 
-
-# http://localhost:5000/pythinlogin/home - this will be the home page, only accessible for loggedin users
+# Home page
 @app.route('/home')
 def home():
     # Check if user is loggedin
     if 'loggedin' in session:
         # User is loggedin show them the home page
-       # return render_template('home.html', username=session['username'])
-    # User is not loggedin redirect to login page
-
-        #if session['usertype'] == "customer":
+        if session['usertype'] == "customer":
             return render_template('home.html', username=session['username'])
-
+        if session['usertype'] == "seller":
+            results = Product.query.filter_by(seller_id=session['id']).all()
+            return render_template('sellerhome.html', username=session['username'], data=results)
+    # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
-
-# http://localhost:5000/pythinlogin/profile - this will be the profile page, only accessible for loggedin users
+# profile Page
 @app.route('/profile')
 def profile():
     # Check if user is loggedin
     if 'loggedin' in session:
         # We need all the account info for the user so we can display it on the profile page
-
-        # account = Account.query.filter_by(id=session['id']).first()
         if session['usertype'] == "customer":
             account = Customer.query.filter_by(customer_id=session['id']).first()
             return render_template('profile.html', customer=account)
@@ -253,22 +236,22 @@ def profile():
         elif session['usertype'] == "seller":
             account = Seller.query.filter_by(seller_id=session['id']).first()
             return render_template('profile.html', seller=account)
-
-        # Show the profile page with account info
-        #return render_template('profile.html', seller=account)
+        
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
-
-@app.route('/searchform')
-def searchform():
+# Search Products Page
+@app.route('/searchproductform')
+def searchproductform():
     # Check if user is loggedin, return redirect to login page if not
     if 'loggedin' not in session:
         return redirect(url_for('login'))
+    elif 'usertype' == 'seller':
+        return redirect(url_for('home'))
     else:
         return render_template('form.html', username=session['username'])
-
-
+    
+# Search Results Page
 @app.route('/search', methods=['POST', 'GET'])
 def search():
     # Check if user is loggedin, return redirect to login page if not
@@ -279,24 +262,68 @@ def search():
         return "Fill out the Search Form"
 
     if request.method == 'POST':
+        msg = ''
         name = request.form['name']
-        id = request.form['id']
+        product_id = request.form['product_id']
+        seller_id = request.form['seller_id']
 
         results = None
 
         if name:
-            results = Instructor.query.filter_by(name=name).all()
-
-        if id:
-            results = Instructor.query.filter_by(id=id).all()
-
+            results = Product.query.filter_by(name=name).all()
+        elif product_id:
+            results = Product.query.filter_by(product_id=product_id).all()
+        elif seller_id:
+            results = Product.query.filter_by(seller_id=seller_id).all()
+        
         data = results
+        if not results:
+            msg = 'No Results Found'
 
         for i in data:
             print(i)
-        # return f"Done!! Query Result is {data}"
-        return render_template('results.html', data=data)
+        return render_template('results.html', data=data, msg=msg)
 
+# Add Product Page
+@app.route('/addproduct', methods=['POST', 'GET'])
+def addproduct():
+    # Check if user is loggedin, return redirect to login page if not
+    if 'loggedin' not in session:
+        return redirect(url_for('login'))
+    elif 'usertype' == 'customer':
+        return redirect(url_for('home'))
+    else:
+        msg = ''
+        if (request.method == 'POST' and 'name' in request.form and 'description' in
+            request.form and 'price' in request.form and 'quantity' in request.form):
+            # Create variables for easy access
+            name = request.form['name']
+            description = request.form['description']
+            price = request.form['price']
+            quantity = request.form['quantity']
+
+            account = Product.query.filter_by(name=name).first()
+
+            # If account exists show error and validation checks
+            if account:
+                msg = 'Product already exists!'
+            elif not re.match(r'[A-Za-z0-9]+', name):
+                msg = 'Product name must contain only characters and numbers!'
+            elif not name or not description or not price or not quantity:
+                msg = 'Please fill out the Product form!'
+            else:
+                # product doesn't exist, add to db
+                product = Product(seller_id = session['id'], name=name, description=description, price=price, product_quantity=quantity)
+
+                db.session.add(product)
+                db.session.commit()
+                msg = 'You have successfully added a Product!'
+
+        elif request.method == 'POST':
+            # Form is empty... (no POST data)
+            msg = 'Please fill out the form!'
+        # Show registration form with message (if any)
+        return render_template('addproduct.html', msg=msg)
 
 if __name__ == '__main__':
     app.run(debug=True)

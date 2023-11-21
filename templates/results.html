@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h2>Product search results: {{ msg }}</h2>
+<table border="1" cellpadding="5" cellspacing="5">
+    <tr><th>Product ID</th><th>Seller ID</th><th>Product Name</th><th>Description</th><th>Price</th><th>Quantity</th></tr>
+    {% for row in data %}
+    <tr>
+        <td>{{row.product_id}}</td>
+        <td>{{row.seller_id}}</td>
+        <td>{{row.name}}</td>
+        <td>{{row.description}}</td>
+        <td>{{row.price}}</td>
+        <td>{{row.product_quantity}}</td>
+    </tr>
+    {% endfor %}
+    </table>
+<a href="{{ url_for('home') }}">Go back to Home</a>
+<br> <br>
+<a href="{{ url_for('searchproductform') }}">Go back to Product Search</a>
+{% endblock %}

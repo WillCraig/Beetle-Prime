@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h2>Add Product Page</h2>
+<p>Hi, {{ username }} fill out the form below to add Products for your online store.</p>
+<form action="/addproduct" method = "POST">
+	<p><h2>Add Product:</h2> 
+	<p>Proudct Name <input type="text" name = "name" /></p>
+	<p>Product Description <input type = "text" name = "description" /></p>
+	<p>Product Price <input type = "text" name = "price" /></p>
+	<p>Product Quantity <input type = "text" name = "quantity" /></p>
+	<p><input type = "submit" value = "Add Product" /></p>
+</form>
+<h2> {{ msg }} </h2>
+{% endblock %}

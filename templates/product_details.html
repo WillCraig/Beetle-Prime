@@ -1,0 +1,20 @@
+
+{% extends 'layout.html' %}
+
+{% block title %}Product Page{% endblock %}
+
+{% block content %}
+  <div class="product-container">
+    <div class="product-details">
+      <h2>{{ product.name }}</h2>
+      <p>{{ product.description }}</p>
+      <p>Price: ${{ product.price }}</p>
+      <p>Available Quantity: {{ product.product_quantity }}</p>
+      <img src="{{ product.images[0].image_url }}" alt="{{ product.name }} Image">
+    </div>
+    <div class="seller-details">
+      <h3>Seller: {{ product.seller.name }}</h3>
+      <p>Contact: {{ product.seller.contact_info }}</p>
+    </div>
+  </div>
+{% endblock %}

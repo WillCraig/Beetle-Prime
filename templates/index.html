@@ -6,12 +6,13 @@
 		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 	</head>
-	<body>
+	<body class="bg">
 		<div class="login">
-			<h1>Login</h1>
+			<h1>Login to Beedle Prime!</h1>
 			<div class="links">
 				<a href="{{ url_for('login') }}" class="active">Login</a>
-				<a href="{{ url_for('register') }}">Register</a>
+				<a href="{{ url_for('register') }}">Customer Register</a>
+				<a href="{{ url_for('sellerregister') }}">Seller Register</a>
 			</div>
 			<form action="{{ url_for('login') }}" method="post">
 				<label for="username">

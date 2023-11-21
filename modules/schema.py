@@ -26,13 +26,6 @@ class Product(db.Model):
     product_quantity = db.Column(db.Integer, nullable=False)
     seller = db.relationship('Seller', backref=db.backref('products', lazy=True))
 
-class ProductImage(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    product_id = db.Column(db.Integer, db.ForeignKey('product.product_id'), nullable=False)
-    image_url = db.Column(db.String(50), nullable=False)
-    product = db.relationship('Product', backref=db.backref('images', lazy=True))
-
-
 # Seller Model
 class Seller(db.Model):
     seller_id = db.Column(db.Integer, primary_key=True, autoincrement=True)

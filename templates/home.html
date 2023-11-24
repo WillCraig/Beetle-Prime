@@ -6,4 +6,6 @@
 <h2>Home Page</h2>
 <p>Welcome back, {{ username }}!</p>
 <a href="{{ url_for('searchproductform') }}">Product Search</a>
+<br />
+<a href="{{ url_for('cart', c_id=c_id) }}">OPEN CART</a>
 {% endblock %}

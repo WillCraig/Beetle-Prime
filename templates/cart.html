@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{% block title %}CART{% endblock %}
+
+{% block content %}
+<h2>CART Page</h2>
+<!-- Create list of products in cart -->
+
+<a href="{{ url_for('purchase', ord_id=order_id)}}" target="_blank">
+    <button>purchase</button>
+</a>
+
+
+{% endblock %}

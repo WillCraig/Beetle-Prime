@@ -1,7 +1,12 @@
 import re, os
 from modules.globals import app, db
+from modules.schema import Customer, Seller, Product, Order, OrderProduct, Purchase
 from flask import Flask, redirect, render_template, request, url_for, session
-from modules.schema import Customer, Seller, Product
+from flask import jsonify
+
+import datetime
+
+
 @app.context_processor
 def handle_context():
     return dict(os=os)
@@ -26,9 +31,16 @@ def login():
             session['id'] = account.customer_id
             session['username'] = account.username
             session['usertype'] = "customer"
+            existing_order = Order.query.filter_by(customer_id=session['id']).first()
+
+            if not existing_order:
+                # If there's no existing order, create a new one
+                new_order = Order(customer_id=session['id'])
+                db.session.add(new_order)
+                db.session.commit()
+                
             # Redirect to home page
             return redirect(url_for('home'))
-        
         account = Seller.query.filter_by(name=username, password=password).first()
         # If Seller account exists in accounts table in out database
         if account:
@@ -147,7 +159,7 @@ def home():
     if 'loggedin' in session:
         # User is loggedin show them the home page
         if session['usertype'] == "customer":
-            return render_template('home.html', username=session['username'])
+            return render_template('home.html', username=session['username'], c_id=session['id'])
         if session['usertype'] == "seller":
             results = Product.query.filter_by(seller_id=session['id']).all()
             return render_template('sellerhome.html', username=session['username'], data=results)
@@ -272,6 +284,56 @@ def product_details(p_id):
         return render_template('home.html', username=session['username'])
 
 
+
+
+@app.route('/cart/<c_id>', methods=['GET', 'POST'])
+def cart(c_id):
+    order = Order.query.filter_by(customer_id=session['id']).first()
+    if order:
+        print(order.order_id)
+        return render_template('cart.html', order=order, order_id=order.order_id, orderItems=order.order_products)
+    else:
+        # Handle product not found, redirect to an error page, or return an error message.
+        return render_template('home.html', username=session['username'])
+
+
+@app.route('/add_to_order/<int:product_id>', methods=['POST'])
+def add_to_order(product_id):
+    user_id = session['id'] # FIXME: make sure this is right.
+    order = Order.query.filter_by(customer_id=user_id).first()
+
+    if order:
+        quantity = int(request.form.get('quantity', 1))
+        OrderProduct.add_product_to_order(order_id=order.order_id, product_id=product_id, quantity=quantity)
+
+    return redirect(url_for('home'))
+
+
+
+@app.route('/purchase/<ord_id>', methods=['GET', 'POST'])
+def purchase(ord_id):
+    order = Order.query.filter_by(order_id=ord_id).first()
+    
+    
+    # Retrieve the product IDs associated with the order ID
+    order_products = OrderProduct.query.filter_by(order_id=ord_id).all()
+    product_ids = [str(op.product_id) for op in order_products]
+    new_purchase = Purchase(order=order, product_id_list=product_ids)
+    db.session.add(new_purchase)
+    db.session.commit()
+    # Remove all items with associated order ID from order_products table
+    OrderProduct.query.filter_by(order_id=ord_id).delete()
+    db.session.delete(order)
+    db.session.commit()
+    
+    # FIXME: determine what the purchase page should look like
+    # perhaps it could direct to the account page and display the purchase history?
+    # or maybe just to a page that says thank you!
+    
+    if order:
+        return render_template('index.html')
+    else:
+        return render_template('home.html', username=session['username'])
 
 
 

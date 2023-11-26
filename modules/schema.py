@@ -26,6 +26,7 @@ class Product(db.Model):
     price = db.Column(db.DECIMAL(8, 2), nullable=False)
     product_quantity = db.Column(db.Integer, nullable=False)
     seller = db.relationship('Seller', backref=db.backref('products', lazy=True))
+    img_link = db.Column(db.String(255), nullable=False)
 
 
 # Order Model
@@ -87,5 +88,4 @@ class PurchaseProduct(db.Model):
     purchase_id = db.Column(db.Integer, db.ForeignKey('purchase.purchase_id'), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('product.product_id'), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
-
 

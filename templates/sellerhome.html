@@ -17,11 +17,7 @@
         <td>{{row.description}}</td>
         <td>{{row.price}}</td>
         <td>{{row.product_quantity}}</td>
-        {% if os.path.exists('./static/productphotos/' + row.name + '.jpg') %}
-        <td><img src="{{url_for('static', filename='/productphotos/' + row.name + '.jpg')}}" width="20%"/></td>
-        {% else %}
-       <td><img src="{{url_for('static', filename='/productphotos/RainbowRoad Question Mark.png')}}" width="20%"/></td>
-        {% endif %}
+        <td><img src="{{ row.img_link }}" width="20%"/></td>
     </tr>
     {% endfor %}
     </table>

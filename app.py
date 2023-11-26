@@ -41,7 +41,6 @@ def login():
                 
             # Redirect to home page
             return redirect(url_for('home'))
-        
         account = Seller.query.filter_by(name=username, password=password).first()
         # If Seller account exists in accounts table in out database
         if account:
@@ -292,14 +291,22 @@ def cart(c_id):
     order = Order.query.filter_by(customer_id=session['id']).first()
     if order:
         print(order.order_id)
-        return render_template('cart.html', order=order, order_id=order.order_id)
+        return render_template('cart.html', order=order, order_id=order.order_id, orderItems=order.order_products)
     else:
         # Handle product not found, redirect to an error page, or return an error message.
         return render_template('home.html', username=session['username'])
 
 
+@app.route('/add_to_order/<int:product_id>', methods=['POST'])
+def add_to_order(product_id):
+    user_id = session['id'] # FIXME: make sure this is right.
+    order = Order.query.filter_by(customer_id=user_id).first()
 
+    if order:
+        quantity = int(request.form.get('quantity', 1))
+        OrderProduct.add_product_to_order(order_id=order.order_id, product_id=product_id, quantity=quantity)
 
+    return redirect(url_for('home'))
 
 
 
@@ -324,7 +331,7 @@ def purchase(ord_id):
     # or maybe just to a page that says thank you!
     
     if order:
-        return render_template('login.html')
+        return render_template('index.html')
     else:
         return render_template('home.html', username=session['username'])
 

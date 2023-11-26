@@ -29,6 +29,9 @@ class Product(db.Model):
     product_quantity = db.Column(db.Integer, nullable=False)
     seller = db.relationship('Seller', backref=db.backref('products', lazy=True))
 
+    # create an example mysql insert statement for a sample product
+    # INSERT INTO product (seller_id, name, description, price, product_quantity) VALUES (1, 'test', 'test', 1.00, 1);
+
 # Order Model
 class Order(db.Model):
     order_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -42,8 +45,17 @@ class OrderProduct(db.Model):
     order_id = db.Column(db.Integer, db.ForeignKey('order.order_id'), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('product.product_id'), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
-    product = db.relationship('Product', backref=db.backref('order_products', lazy=True))
-    order = db.relationship('Order', backref=db.backref('order_products', lazy=True))
+    order = db.relationship('Order', backref=db.backref('order_products', lazy='dynamic'))
+    product = db.relationship('Product', backref=db.backref('order_products', lazy='dynamic'))
+
+
+    @classmethod
+    def add_product_to_order(cls, order_id, product_id, quantity):
+        order_product = cls(order_id=order_id, product_id=product_id, quantity=quantity)
+        db.session.add(order_product)
+        db.session.commit()
+        return order_product
+
 
 # Seller Model
 class Seller(db.Model):

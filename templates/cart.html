@@ -6,6 +6,15 @@
 <h2>CART Page</h2>
 <!-- Create list of products in cart -->
 
+
+{#    // show products in orderItems#}
+    {% for item in orderItems %}
+        <p>{{ item.product.name }}</p>
+        <p>{{ item.product.price }}</p>
+        <p>{{ item.quantity }}</p>
+        <p>{{ item.product.price * item.quantity }}</p>
+    {% endfor %}
+
 <a href="{{ url_for('purchase', ord_id=order_id)}}" target="_blank">
     <button>purchase</button>
 </a>

@@ -7,5 +7,18 @@
 <p>Welcome back, {{ username }}!</p>
 <a href="{{ url_for('searchproductform') }}">Product Search</a>
 <br />
+
+{# create a button that will insert product id 1 to the order based on the proper schema in schema.py#}
+    <form action="{{ url_for('add_to_order', product_id='1') }}" method="post">
+          <input type="number" name="quantity" value="1" min="1">
+          <input type="submit" value="Add to Order">
+        </form>
+</form>
+<h3>Cart</h3>
+
 <a href="{{ url_for('cart', c_id=c_id) }}">OPEN CART</a>
+{% endblock %}
+
+{% block sidebar %}
+
 {% endblock %}

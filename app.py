@@ -355,8 +355,10 @@ def purchase_details(pur_id):
         # Handle product not found, redirect to an error page, or return an error message.
         return render_template('home.html', username=session['username'])
 
-
-
+@app.route('/all_products', methods=['GET'])
+def all_products():
+    products = Product.query.all()
+    return render_template('all_products.html', all_products=products)
 
 if __name__ == '__main__':
     app.run(debug=True)

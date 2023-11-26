@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+
+    <h1>Products</h1>
+
+    <ul>
+        {% for product in all_products %}
+            <li><a href="{{ url_for('product_details', p_id=product.id) }}">{{ product.name }}</a></li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

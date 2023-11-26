@@ -8,7 +8,7 @@
 <a href="{{ url_for('searchproductform') }}">Product Search</a>
 <br />
 
-{# create a button that will insert product id 1 to the order based on the proper schema in schema.py#}
+<h3>Products</h3>
     <form action="{{ url_for('add_to_order', product_id='1') }}" method="post">
           <input type="number" name="quantity" value="1" min="1">
           <input type="submit" value="Add to Order">

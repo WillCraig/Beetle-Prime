@@ -16,7 +16,7 @@ Shell is now reset
 
 Sample Data:
 ```mysql
-INSERT INTO Customer (username, password, email, street, city, state, zipcode) VALUES
+INSERT INTO customer (username, password, email, street, city, state, zipcode) VALUES
 ('s', 's', 'john.doe@email.com', '123 Oak St', 'Cityville', 'Stateville', 54321);
 
 INSERT INTO seller (name, password, email, street, city, state, zipcode) VALUES ('sell', 's', 'email@email.com', 'street', 'city', 'state', 12345);

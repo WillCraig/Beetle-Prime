@@ -255,10 +255,10 @@ def addproduct():
             price = request.form['price']
             quantity = request.form['quantity']
 
-            account = Product.query.filter_by(name=name).first()
+            product = Product.query.filter_by(name=name).first()
 
-            # If account exists show error and validation checks
-            if account:
+            # If product exists show error and validation checks
+            if product:
                 msg = 'Product already exists!'
             elif not re.match(r'[A-Za-z0-9]+', name):
                 msg = 'Product name must contain only characters and numbers!'
@@ -266,8 +266,14 @@ def addproduct():
                 msg = 'Please fill out the Product form!'
             else:
                 # product doesn't exist, add to db
-                product = Product(seller_id=session['id'], name=name, description=description, price=price,
-                                  product_quantity=quantity)
+
+                if 'img_link' in request.form:
+                    img_link = request.form['img_link']
+                    product = Product(seller_id=session['id'], name=name, description=description, price=price,
+                                      product_quantity=quantity, img_link=img_link)
+                else:
+                    product = Product(seller_id=session['id'], name=name, description=description, price=price,
+                                      product_quantity=quantity, img_link='https://cdn.vox-cdn.com/thumbor/Vu29oQjMk6yyUy9PmGNeWQqznHI=/39x94:1887x974/1200x800/filters:focal(934x381:1240x687)/cdn.vox-cdn.com/uploads/chorus_image/image/72845570/The_Legend_of_Zelda._Skyward_Sword_Screen_Shot_7_19_21__5.58_PM.0.png')
 
                 db.session.add(product)
                 db.session.commit()

@@ -1,10 +1,10 @@
-import re, os
+import os
+import re
+
+from flask import redirect, render_template, request, url_for, session
+
 from modules.globals import app, db
 from modules.schema import Customer, Seller, Product, Order, OrderProduct, Purchase
-from flask import Flask, redirect, render_template, request, url_for, session
-from flask import jsonify
-
-import datetime
 
 
 @app.context_processor
@@ -38,7 +38,7 @@ def login():
                 new_order = Order(customer_id=session['id'])
                 db.session.add(new_order)
                 db.session.commit()
-                
+
             # Redirect to home page
             return redirect(url_for('home'))
         account = Seller.query.filter_by(name=username, password=password).first()
@@ -57,6 +57,7 @@ def login():
     # Show the login form with message (if any)
     return render_template('index.html', msg=msg)
 
+
 # Logout Page
 @app.route('/logout')
 def logout():
@@ -67,6 +68,7 @@ def logout():
     session.pop('usertype', None)
     # Redirect to login page
     return redirect(url_for('login'))
+
 
 # Customer Register
 @app.route('/register', methods=['GET', 'POST'])
@@ -98,7 +100,8 @@ def register():
             msg = 'Please fill out the form!'
         else:
             # account doesn't exist, add to db
-            account = Customer(username=username, password=password, email=email, street=street, city=city, state = state, zipcode=zipcode)
+            account = Customer(username=username, password=password, email=email, street=street, city=city, state=state,
+                               zipcode=zipcode)
 
             db.session.add(account)
             db.session.commit()
@@ -109,6 +112,7 @@ def register():
         msg = 'Please fill out the form!'
     # Show registration form with message (if any)
     return render_template('register.html', msg=msg)
+
 
 # Seller Register
 @app.route('/sellerregister', methods=['GET', 'POST'])
@@ -140,7 +144,8 @@ def sellerregister():
             msg = 'Please fill out the form!'
         else:
             # account doesn't exist, add to db
-            account = Seller(name=name, password=password, email=email, street=street, city=city, state = state, zipcode=zipcode)
+            account = Seller(name=name, password=password, email=email, street=street, city=city, state=state,
+                             zipcode=zipcode)
 
             db.session.add(account)
             db.session.commit()
@@ -151,6 +156,7 @@ def sellerregister():
         msg = 'Please fill out the form!'
     # Show registration form with message (if any)
     return render_template('sellerregister.html', msg=msg)
+
 
 # Home page
 @app.route('/home')
@@ -166,6 +172,7 @@ def home():
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
+
 # profile Page
 @app.route('/profile')
 def profile():
@@ -179,10 +186,10 @@ def profile():
         elif session['usertype'] == "seller":
             account = Seller.query.filter_by(seller_id=session['id']).first()
             return render_template('profile.html', seller=account)
-        
 
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
+
 
 # Search Products Page
 @app.route('/searchproductform')
@@ -194,7 +201,8 @@ def searchproductform():
         return redirect(url_for('home'))
     else:
         return render_template('form.html', username=session['username'])
-    
+
+
 # Search Results Page
 @app.route('/search', methods=['POST', 'GET'])
 def search():
@@ -219,7 +227,7 @@ def search():
             results = Product.query.filter_by(product_id=product_id).all()
         elif seller_id:
             results = Product.query.filter_by(seller_id=seller_id).all()
-        
+
         data = results
         if not results:
             msg = 'No Results Found'
@@ -227,6 +235,7 @@ def search():
         for i in data:
             print(i)
         return render_template('results.html', data=data, msg=msg)
+
 
 # Add Product Page
 @app.route('/addproduct', methods=['POST', 'GET'])
@@ -239,7 +248,7 @@ def addproduct():
     else:
         msg = ''
         if (request.method == 'POST' and 'name' in request.form and 'description' in
-            request.form and 'price' in request.form and 'quantity' in request.form):
+                request.form and 'price' in request.form and 'quantity' in request.form):
             # Create variables for easy access
             name = request.form['name']
             description = request.form['description']
@@ -257,7 +266,8 @@ def addproduct():
                 msg = 'Please fill out the Product form!'
             else:
                 # product doesn't exist, add to db
-                product = Product(seller_id = session['id'], name=name, description=description, price=price, product_quantity=quantity)
+                product = Product(seller_id=session['id'], name=name, description=description, price=price,
+                                  product_quantity=quantity)
 
                 db.session.add(product)
                 db.session.commit()
@@ -270,10 +280,6 @@ def addproduct():
         return render_template('addproduct.html', msg=msg)
 
 
-
-
-
-
 @app.route('/product_details/<p_id>', methods=['GET', 'POST'])
 def product_details(p_id):
     product = Product.query.get(p_id)
@@ -282,8 +288,6 @@ def product_details(p_id):
     else:
         # Handle product not found, redirect to an error page, or return an error message.
         return render_template('home.html', username=session['username'])
-
-
 
 
 @app.route('/cart/<c_id>', methods=['GET', 'POST'])
@@ -299,7 +303,7 @@ def cart(c_id):
 
 @app.route('/add_to_order/<int:product_id>', methods=['POST'])
 def add_to_order(product_id):
-    user_id = session['id'] # FIXME: make sure this is right.
+    user_id = session['id']  # FIXME: make sure this is right.
     order = Order.query.filter_by(customer_id=user_id).first()
 
     if order:
@@ -309,12 +313,10 @@ def add_to_order(product_id):
     return redirect(url_for('home'))
 
 
-
 @app.route('/purchase/<ord_id>', methods=['GET', 'POST'])
 def purchase(ord_id):
     order = Order.query.filter_by(order_id=ord_id).first()
-    
-    
+
     # Retrieve the product IDs associated with the order ID
     order_products = OrderProduct.query.filter_by(order_id=ord_id).all()
     product_ids = [str(op.product_id) for op in order_products]
@@ -325,16 +327,16 @@ def purchase(ord_id):
     OrderProduct.query.filter_by(order_id=ord_id).delete()
     db.session.delete(order)
     db.session.commit()
-    
+
     # FIXME: determine what the purchase page should look like
     # perhaps it could direct to the account page and display the purchase history?
     # or maybe just to a page that says thank you!
-    
+
     if order:
+        # as a placeholder, go back to login.
         return render_template('index.html')
     else:
         return render_template('home.html', username=session['username'])
-
 
 
 if __name__ == '__main__':

@@ -67,16 +67,25 @@ class Seller(db.Model):
 
 # Purchase Model
 class Purchase(db.Model):
-    product_id_list = []
     purchase_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     customer_id = db.Column(db.Integer, nullable=False)
-    order_date = db.Column(db.DateTime, nullable=False)
+    order_date = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now())
     purchase_date = db.Column(db.DateTime, default=datetime.datetime.now(), nullable=False)
 
-    # Add other fields as needed
-
-    def __init__(self, order, product_id_list):
+    def __init__(self, order):
         self.customer_id = order.customer_id
         self.order_date = order.order_date
-        self.product_id_list = product_id_list
-        # Populate other fields as needed
+
+
+
+# PurchaseProduct Model
+
+# PurchaseProduct Model
+class PurchaseProduct(db.Model):
+    __tablename__ = 'purchase_products'
+    id = db.Column(db.Integer, primary_key=True)
+    purchase_id = db.Column(db.Integer, db.ForeignKey('purchase.purchase_id'), nullable=False)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.product_id'), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+
+

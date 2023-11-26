@@ -4,7 +4,7 @@ import re
 from flask import redirect, render_template, request, url_for, session
 
 from modules.globals import app, db
-from modules.schema import Customer, Seller, Product, Order, OrderProduct, Purchase
+from modules.schema import Customer, Seller, Product, Order, OrderProduct, Purchase, PurchaseProduct
 
 
 @app.context_processor
@@ -317,26 +317,45 @@ def add_to_order(product_id):
 def purchase(ord_id):
     order = Order.query.filter_by(order_id=ord_id).first()
 
-    # Retrieve the product IDs associated with the order ID
-    order_products = OrderProduct.query.filter_by(order_id=ord_id).all()
-    product_ids = [str(op.product_id) for op in order_products]
-    new_purchase = Purchase(order=order, product_id_list=product_ids)
-    db.session.add(new_purchase)
-    db.session.commit()
-    # Remove all items with associated order ID from order_products table
-    OrderProduct.query.filter_by(order_id=ord_id).delete()
-    db.session.delete(order)
-    db.session.commit()
-
-    # FIXME: determine what the purchase page should look like
-    # perhaps it could direct to the account page and display the purchase history?
-    # or maybe just to a page that says thank you!
+    # ... (existing code)
 
     if order:
-        # as a placeholder, go back to login.
-        return render_template('index.html')
+        # Retrieve all products associated with the order
+        order_products = OrderProduct.query.filter_by(order_id=ord_id).all()
+
+        # Create a new purchase
+        new_purchase = Purchase(order=order)
+        db.session.add(new_purchase)
+        db.session.commit()
+
+        # Create entries in PurchaseProducts for each product associated with the order
+        for op in order_products:
+            purchase_product = PurchaseProduct(purchase_id=new_purchase.purchase_id, product_id=op.product_id, quantity=op.quantity)
+            db.session.add(purchase_product)
+
+        db.session.commit()
+
+        # Remove all items with associated order ID from order_products table
+        OrderProduct.query.filter_by(order_id=ord_id).delete()
+        db.session.delete(order)
+        db.session.commit()
+
+        # Redirect to the purchase details page
+        return redirect(url_for('purchase_details', pur_id=new_purchase.purchase_id))
     else:
         return render_template('home.html', username=session['username'])
+
+@app.route('/purchase_details/<pur_id>', methods=['GET', 'POST'])
+def purchase_details(pur_id):
+    purchase = Purchase.query.get(pur_id)
+    if purchase:
+
+        return render_template('purchase_details.html', pur_id=pur_id)
+    else:
+        # Handle product not found, redirect to an error page, or return an error message.
+        return render_template('home.html', username=session['username'])
+
+
 
 
 if __name__ == '__main__':

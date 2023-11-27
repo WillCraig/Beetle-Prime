@@ -300,8 +300,20 @@ def product_details(p_id):
 def cart(c_id):
     order = Order.query.filter_by(customer_id=session['id']).first()
     if order:
-        print(order.order_id)
-        return render_template('cart.html', order=order, order_id=order.order_id, orderItems=order.order_products)
+        #TODO: calculate total, subtotal, tax, shipping
+        items = OrderProduct.query.filter_by(order_id=order.order_id).all()
+        subttl = 0
+        ttl = 0
+        tx = 0
+        shp = 0
+
+        for i in items:
+            ttl += i.product.price * i.quantity
+            subttl += i.product.price * i.quantity
+            tx += float(i.product.price) * i.quantity * .07
+            shp += 5.00
+
+        return render_template('cart.html', order=order, order_id=order.order_id, orderItems=order.order_products, total=ttl, subtotal=subttl, tax=tx, shipping=shp)
     else:
         # Handle product not found, redirect to an error page, or return an error message.
         return render_template('home.html', username=session['username'])

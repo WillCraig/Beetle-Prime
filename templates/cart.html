@@ -18,6 +18,14 @@
 </div>
 
 
+<div class="total">
+    <h2>Subtotal: ${{ subtotal }}</h2>
+    <h2>Tax: ${{ tax }}</h2>
+    <h2>Shipping: ${{ shipping }}</h2>
+    <h2>Total: ${{ total }}</h2>
+</div>
+
+
 
 <a href="{{ url_for('purchase', ord_id=order_id)}}" target="_blank">
     <button>Complete Purchase</button>

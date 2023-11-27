@@ -2,6 +2,7 @@ import os
 import re
 
 from flask import redirect, render_template, request, url_for, session
+from sqlalchemy import func
 
 from modules.globals import app, db
 from modules.schema import Customer, Seller, Product, Order, OrderProduct, Purchase, PurchaseProduct
@@ -165,7 +166,9 @@ def home():
     if 'loggedin' in session:
         # User is loggedin show them the home page
         if session['usertype'] == "customer":
-            return render_template('home.html', username=session['username'], c_id=session['id'])
+            # get 3 random products
+            results = Product.query.order_by(func.random()).limit(3).all()
+            return render_template('home.html', username=session['username'], c_id=session['id'], data=results)
         if session['usertype'] == "seller":
             results = Product.query.filter_by(seller_id=session['id']).all()
             return render_template('sellerhome.html', username=session['username'], data=results)
@@ -368,7 +371,14 @@ def purchase_details(pur_id):
     purchase = Purchase.query.get(pur_id)
     if purchase:
 
-        return render_template('purchase_details.html', pur_id=pur_id)
+        purchase_items = PurchaseProduct.query.filter_by(purchase_id=pur_id).all()
+        # get list of products based on the purchase_id data from purchase_items
+        products = []
+        for item in purchase_items:
+            product = Product.query.get(item.product_id)
+            products.append(product)
+
+        return render_template('purchase_details.html', pur_id=pur_id, purchase=purchase, purchase_items=products)
     else:
         # Handle product not found, redirect to an error page, or return an error message.
         return render_template('home.html', username=session['username'])

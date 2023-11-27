@@ -3,9 +3,22 @@
 {% block title %}Purchase Details{% endblock %}
 
 {% block content %}
-    <h1>Purchase Details</h1>
+    <h1>Thank you for your purchase</h1>
+    <p>Shop logo</p>
 
-    <p> {{ pur_id }}</p>
+
+
+<div class="product-list">
+    {% for product in purchase_items %}
+        <div class="product">
+            <img src="{{ product.img_link }}" alt="{{ product.name }}">
+            <h2>{{ product.name }}</h2>
+            <p>{{ product.description }}</p>
+            <p>Price: ${{ product.price }}</p>
+            <p>Quantity: {{ product.product_quantity }}</p>
+        </div>
+    {% endfor %}
+</div>
 
 
 

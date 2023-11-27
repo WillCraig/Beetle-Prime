@@ -29,30 +29,30 @@ INSERT INTO product (seller_id, name, description, price, product_quantity, img_
 VALUES (1, 'Laptop', 'High-performance laptop with SSD', 899.99, 50, 'https://cdn.vox-cdn.com/thumbor/Vu29oQjMk6yyUy9PmGNeWQqznHI=/39x94:1887x974/1200x800/filters:focal(934x381:1240x687)/cdn.vox-cdn.com/uploads/chorus_image/image/72845570/The_Legend_of_Zelda._Skyward_Sword_Screen_Shot_7_19_21__5.58_PM.0.png');
 
 INSERT INTO product (seller_id, name, description, price, product_quantity, img_link)
-VALUES (2, 'Smartphone', 'Latest smartphone with dual camera', 699.99, 80, 'https://cdn.vox-cdn.com/thumbor/Vu29oQjMk6yyUy9PmGNeWQqznHI=/39x94:1887x974/1200x800/filters:focal(934x381:1240x687)/cdn.vox-cdn.com/uploads/chorus_image/image/72845570/The_Legend_of_Zelda._Skyward_Sword_Screen_Shot_7_19_21__5.58_PM.0.png');
+VALUES (1, 'Smartphone', 'Latest smartphone with dual camera', 699.99, 80, 'https://cdn.vox-cdn.com/thumbor/Vu29oQjMk6yyUy9PmGNeWQqznHI=/39x94:1887x974/1200x800/filters:focal(934x381:1240x687)/cdn.vox-cdn.com/uploads/chorus_image/image/72845570/The_Legend_of_Zelda._Skyward_Sword_Screen_Shot_7_19_21__5.58_PM.0.png');
 
 INSERT INTO product (seller_id, name, description, price, product_quantity, img_link)
-VALUES (3, 'Headphones', 'Noise-canceling headphones with Bluetooth', 149.99, 30, 'https://cdn.vox-cdn.com/thumbor/Vu29oQjMk6yyUy9PmGNeWQqznHI=/39x94:1887x974/1200x800/filters:focal(934x381:1240x687)/cdn.vox-cdn.com/uploads/chorus_image/image/72845570/The_Legend_of_Zelda._Skyward_Sword_Screen_Shot_7_19_21__5.58_PM.0.png');
+VALUES (1, 'Headphones', 'Noise-canceling headphones with Bluetooth', 149.99, 30, 'https://cdn.vox-cdn.com/thumbor/Vu29oQjMk6yyUy9PmGNeWQqznHI=/39x94:1887x974/1200x800/filters:focal(934x381:1240x687)/cdn.vox-cdn.com/uploads/chorus_image/image/72845570/The_Legend_of_Zelda._Skyward_Sword_Screen_Shot_7_19_21__5.58_PM.0.png');
 
 INSERT INTO product (seller_id, name, description, price, product_quantity, img_link)
-VALUES (4, 'Coffee Maker', 'Stainless steel coffee maker with timer', 79.99, 20, 'https://cdn.vox-cdn.com/thumbor/Vu29oQjMk6yyUy9PmGNeWQqznHI=/39x94:1887x974/1200x800/filters:focal(934x381:1240x687)/cdn.vox-cdn.com/uploads/chorus_image/image/72845570/The_Legend_of_Zelda._Skyward_Sword_Screen_Shot_7_19_21__5.58_PM.0.png');
+VALUES (1, 'Coffee Maker', 'Stainless steel coffee maker with timer', 79.99, 20, 'https://cdn.vox-cdn.com/thumbor/Vu29oQjMk6yyUy9PmGNeWQqznHI=/39x94:1887x974/1200x800/filters:focal(934x381:1240x687)/cdn.vox-cdn.com/uploads/chorus_image/image/72845570/The_Legend_of_Zelda._Skyward_Sword_Screen_Shot_7_19_21__5.58_PM.0.png');
 
 INSERT INTO product (seller_id, name, description, price, product_quantity, img_link)
-VALUES (5, 'Fitness Tracker', 'Waterproof fitness tracker with heart rate monitor', 49.99, 60, 'https://cdn.vox-cdn.com/thumbor/Vu29oQjMk6yyUy9PmGNeWQqznHI=/39x94:1887x974/1200x800/filters:focal(934x381:1240x687)/cdn.vox-cdn.com/uploads/chorus_image/image/72845570/The_Legend_of_Zelda._Skyward_Sword_Screen_Shot_7_19_21__5.58_PM.0.png');
+VALUES (1, 'Fitness Tracker', 'Waterproof fitness tracker with heart rate monitor', 49.99, 60, 'https://cdn.vox-cdn.com/thumbor/Vu29oQjMk6yyUy9PmGNeWQqznHI=/39x94:1887x974/1200x800/filters:focal(934x381:1240x687)/cdn.vox-cdn.com/uploads/chorus_image/image/72845570/The_Legend_of_Zelda._Skyward_Sword_Screen_Shot_7_19_21__5.58_PM.0.png');
 
 INSERT INTO product (seller_id, name, description, price, product_quantity, img_link)
 VALUES (1, 'Wireless Mouse', 'Ergonomic wireless mouse for comfortable use', 29.99, 40, 'https://cdn.vox-cdn.com/thumbor/Vu29oQjMk6yyUy9PmGNeWQqznHI=/39x94:1887x974/1200x800/filters:focal(934x381:1240x687)/cdn.vox-cdn.com/uploads/chorus_image/image/72845570/The_Legend_of_Zelda._Skyward_Sword_Screen_Shot_7_19_21__5.58_PM.0.png');
 
 INSERT INTO product (seller_id, name, description, price, product_quantity, img_link)
-VALUES (2, 'Backpack', 'Durable backpack with multiple compartments', 39.99, 25, 'https://cdn.vox-cdn.com/thumbor/Vu29oQjMk6yyUy9PmGNeWQqznHI=/39x94:1887x974/1200x800/filters:focal(934x381:1240x687)/cdn.vox-cdn.com/uploads/chorus_image/image/72845570/The_Legend_of_Zelda._Skyward_Sword_Screen_Shot_7_19_21__5.58_PM.0.png');
+VALUES (1, 'Backpack', 'Durable backpack with multiple compartments', 39.99, 25, 'https://cdn.vox-cdn.com/thumbor/Vu29oQjMk6yyUy9PmGNeWQqznHI=/39x94:1887x974/1200x800/filters:focal(934x381:1240x687)/cdn.vox-cdn.com/uploads/chorus_image/image/72845570/The_Legend_of_Zelda._Skyward_Sword_Screen_Shot_7_19_21__5.58_PM.0.png');
 
 INSERT INTO product (seller_id, name, description, price, product_quantity, img_link)
-VALUES (3, 'Gaming Keyboard', 'Mechanical gaming keyboard with RGB lighting', 89.99, 15, 'https://cdn.vox-cdn.com/thumbor/Vu29oQjMk6yyUy9PmGNeWQqznHI=/39x94:1887x974/1200x800/filters:focal(934x381:1240x687)/cdn.vox-cdn.com/uploads/chorus_image/image/72845570/The_Legend_of_Zelda._Skyward_Sword_Screen_Shot_7_19_21__5.58_PM.0.png');
+VALUES (1, 'Gaming Keyboard', 'Mechanical gaming keyboard with RGB lighting', 89.99, 15, 'https://cdn.vox-cdn.com/thumbor/Vu29oQjMk6yyUy9PmGNeWQqznHI=/39x94:1887x974/1200x800/filters:focal(934x381:1240x687)/cdn.vox-cdn.com/uploads/chorus_image/image/72845570/The_Legend_of_Zelda._Skyward_Sword_Screen_Shot_7_19_21__5.58_PM.0.png');
 
 INSERT INTO product (seller_id, name, description, price, product_quantity, img_link)
-VALUES (4, 'Bluetooth Speaker', 'Portable Bluetooth speaker with long battery life', 59.99, 35, 'https://cdn.vox-cdn.com/thumbor/Vu29oQjMk6yyUy9PmGNeWQqznHI=/39x94:1887x974/1200x800/filters:focal(934x381:1240x687)/cdn.vox-cdn.com/uploads/chorus_image/image/72845570/The_Legend_of_Zelda._Skyward_Sword_Screen_Shot_7_19_21__5.58_PM.0.png');
+VALUES (1, 'Bluetooth Speaker', 'Portable Bluetooth speaker with long battery life', 59.99, 35, 'https://cdn.vox-cdn.com/thumbor/Vu29oQjMk6yyUy9PmGNeWQqznHI=/39x94:1887x974/1200x800/filters:focal(934x381:1240x687)/cdn.vox-cdn.com/uploads/chorus_image/image/72845570/The_Legend_of_Zelda._Skyward_Sword_Screen_Shot_7_19_21__5.58_PM.0.png');
 
 INSERT INTO product (seller_id, name, description, price, product_quantity, img_link)
-VALUES (5, 'External Hard Drive', '1TB external hard drive for extra storage', 129.99, 10, 'https://cdn.vox-cdn.com/thumbor/Vu29oQjMk6yyUy9PmGNeWQqznHI=/39x94:1887x974/1200x800/filters:focal(934x381:1240x687)/cdn.vox-cdn.com/uploads/chorus_image/image/72845570/The_Legend_of_Zelda._Skyward_Sword_Screen_Shot_7_19_21__5.58_PM.0.png');
+VALUES (1, 'External Hard Drive', '1TB external hard drive for extra storage', 129.99, 10, 'https://cdn.vox-cdn.com/thumbor/Vu29oQjMk6yyUy9PmGNeWQqznHI=/39x94:1887x974/1200x800/filters:focal(934x381:1240x687)/cdn.vox-cdn.com/uploads/chorus_image/image/72845570/The_Legend_of_Zelda._Skyward_Sword_Screen_Shot_7_19_21__5.58_PM.0.png');
 
 ```

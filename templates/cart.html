@@ -3,21 +3,32 @@
 {% block title %}CART{% endblock %}
 
 {% block content %}
-<h2>CART Page</h2>
-<!-- Create list of products in cart -->
+  <div class="cart-page">
+    <div class="left-column">
+      <h2>CART Page</h2>
+      <div class="cart-list">
+        {% for product in orderItems %}
+          <div class="product">
+            <img src="{{ product.img_link }}" alt="{{ product.name }}">
+            <h2>{{ product.name }}</h2>
+            <p>{{ product.description }}</p>
+            <p>Price: ${{ product.price }}</p>
+            <p>Quantity: {{ product.product_quantity }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
 
+    <div class="right-column">
+      <h2>Order Details</h2>
+      <h5>Subtotal: ${{ subtotal }}</h5>
+      <h5>Tax: ${{ tax }}</h5>
+      <h5>Shipping: ${{ shipping }}</h5>
+      <h5>Total: ${{ total }}</h5>
 
-{#    // show products in orderItems#}
-    {% for item in orderItems %}
-        <p>{{ item.product.name }}</p>
-        <p>{{ item.product.price }}</p>
-        <p>{{ item.quantity }}</p>
-        <p>{{ item.product.price * item.quantity }}</p>
-    {% endfor %}
-
-<a href="{{ url_for('purchase', ord_id=order_id)}}" target="_blank">
-    <button>purchase</button>
-</a>
-
-
+      <a href="{{ url_for('purchase', ord_id=order_id)}}" target="_blank">
+        <button>Complete Purchase</button>
+      </a>
+    </div>
+  </div>
 {% endblock %}

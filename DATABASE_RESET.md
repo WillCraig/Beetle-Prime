@@ -55,4 +55,14 @@ VALUES (1, 'Bluetooth Speaker', 'Portable Bluetooth speaker with long battery li
 INSERT INTO product (seller_id, name, description, price, product_quantity, img_link)
 VALUES (1, 'External Hard Drive', '1TB external hard drive for extra storage', 129.99, 10, 'https://cdn.vox-cdn.com/thumbor/Vu29oQjMk6yyUy9PmGNeWQqznHI=/39x94:1887x974/1200x800/filters:focal(934x381:1240x687)/cdn.vox-cdn.com/uploads/chorus_image/image/72845570/The_Legend_of_Zelda._Skyward_Sword_Screen_Shot_7_19_21__5.58_PM.0.png');
 
+INSERT INTO product (seller_id, name, description, price, product_quantity, img_link)
+VALUES (1, 'Princess Peach', 'Mario Game', 19.99, 2, 'https://mario.nintendo.com/static/6731ec87c8e4fe2ab7b191292f9df949/13fb2/peach-unstack-open.png');
+
+INSERT INTO product (seller_id, name, description, price, product_quantity, img_link)
+VALUES (1, 'Walulgi', 'Mario Game', 15.99, 3, 'https://mario.nintendo.com/static/d468a32c7ab971cce7b3e89ae48560a0/13fb2/waluigi-unstack-open.png');
+
+INSERT INTO product (seller_id, name, description, price, product_quantity, img_link)
+VALUES (1, 'Bowser', 'Mario Game', 18.99, 2, 'https://mario.nintendo.com/static/233682a28cdb7b3cc0232a81a0b6c4e7/13fb2/bowser-unstack-open.png');
+
+
 ```

@@ -3,7 +3,7 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h2>Product search results: {{ msg }}</h2>
+<!-- <h2>Product search results: {{ msg }}</h2>
 <table border="1" cellpadding="5" cellspacing="5">
     <tr><th>Product ID</th><th>Seller ID</th><th>Product Name</th><th>Description</th><th>Price</th><th>Quantity</th><th>Product Image</th></tr>
     {% for row in data %}
@@ -24,5 +24,24 @@
     </table>
 <a href="{{ url_for('home') }}">Go back to Home</a>
 <br> <br>
-<a href="{{ url_for('searchproductform') }}">Go back to Product Search</a>
+<a href="{{ url_for('searchproductform') }}">Go back to Product Search</a> -->
+
+<div class="section">
+    <h2>Products</h2>
+{#    Horizontal list of 5 products #}
+
+<div class="product-list">
+    {% for product in data %}
+        <div class="product">
+            <img src="{{ product.img_link }}" alt="{{ product.name }}">
+            <h2>{{ product.name }}</h2>
+            <p>{{ product.description }}</p>
+            <p>Quantity: {{ product.product_quantity }}</p>
+            <button class="price-button">Add: ${{ product.price }}</button>
+            <!-- Add more details as needed -->
+        </div>
+    {% endfor %}
+</div>
+</div>
+
 {% endblock %}

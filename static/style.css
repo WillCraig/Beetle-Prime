@@ -1,6 +1,6 @@
 * {
     box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "segoe ui", roboto, oxygen, ubuntu, cantarell, "fira sans", "droid sans", "helvetica neue", Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "segoe ui", roboto, oxygen, ubuntu, cantarell, "fira sans", "droid sans", "helvetica neue", Arial, sans-serif; 
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -77,42 +77,45 @@ body {
     background-color: #2868c7;
     transition: background-color 0.2s;
 }
+
 .navtop {
-    background-color: #2f3947;
+    background: linear-gradient(45deg, #4158D0, #C850C0, #ffcc70, #7a00ff);
     height: 60px;
     width: 100%;
     border: 0;
-}
-.navtop div {
-    display: flex;
-    margin: 0 auto;
-    width: 1000px;
-    height: 100%;
-}
-.navtop div h1, .navtop div a {
-    display: inline-flex;
+    display: flex; 
+    justify-content: space-between; 
     align-items: center;
 }
-.navtop div h1 {
-    flex: 1;
-    font-size: 24px;
-    padding: 0;
-   margin: 0;
-    color: #eaebed;
-    font-weight: normal;
+
+.navtop > a {
+    color: #2f3947;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 20px 150px;
 }
+
+.navtop div {
+    display: flex;
+    align-items: center;
+    padding-right: 150px;
+}
+
 .navtop div a {
     padding: 0 20px;
     text-decoration: none;
-    color: #c1c4c8;
+    color: #2f3947;
     font-weight: bold;
 }
+
 .navtop div a i {
     padding: 2px 8px 0 0;
 }
+
 .navtop div a:hover {
     color: #eaebed;
 }
+
 body.loggedin {
     background-color: #f3f4f7;
 }
@@ -148,3 +151,46 @@ body.loggedin {
 .bg { 
     background-image: url("BotW_Beedle_Model.png");
   }
+
+.logo {
+    display: flex;
+    max-width: 250px; 
+    margin: 0 auto; 
+    padding: 0px; 
+}
+
+.homeimage .logo{
+    display: flex;
+    position: relative;
+    max-width: 100%; 
+    margin: 0 auto; 
+    padding: 0px; 
+}
+
+.search-container {
+    text-align: center;
+    margin-top: 20px;
+    display: flex;
+    font-size: 20px;
+    font-family: 500px;
+    justify-content: flex-end;
+}
+.search-input,
+.search-button {
+    padding: 8px;
+    font-size: 20px;
+    font-family: 500px;
+}
+
+.search-button {
+    box-shadow: 0 0 15px #7a00ff; 
+    background-color: #7a00ff; 
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.search-button:hover {
+    box-shadow: 0 0 15px #ff7300;
+    background-color: #ff7300;
+}

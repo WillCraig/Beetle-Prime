@@ -11,8 +11,8 @@
             <img src="{{ product.img_link }}" alt="{{ product.name }}">
             <h2>{{ product.name }}</h2>
             <p>{{ product.description }}</p>
-            <p>Price: ${{ product.price }}</p>
             <p>Quantity: {{ product.product_quantity }}</p>
+            <button class="price-button">Add: ${{ product.price }}</button>
             <!-- Add more details as needed -->
         </div>
     {% endfor %}

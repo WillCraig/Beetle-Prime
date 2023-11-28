@@ -238,7 +238,31 @@ def search():
         for i in data:
             print(i)
         return render_template('results.html', data=data, msg=msg)
+    
+# Search bar
+@app.route('/searchbar', methods=['POST', 'GET'])
+def searchbar():
+    # Check if user is loggedin, return redirect to login page if not
+    if 'loggedin' not in session:
+        return redirect(url_for('login'))
+    if request.method == 'GET':
+        return "Search Bar"
+    if request.method == 'POST':
+        msg = ''
+        name = request.form['name']
+        
+        results = None
 
+        if name:
+            results = Product.query.filter_by(name=name).all()
+        
+        data = results
+        if not results:
+            msg = 'No Results Found'
+
+        for i in data:
+            print(i)
+        return render_template('results.html', data=data, msg=msg)
 
 # Add Product Page
 @app.route('/addproduct', methods=['POST', 'GET'])

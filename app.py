@@ -192,52 +192,6 @@ def profile():
 
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
-
-
-# Search Products Page
-@app.route('/searchproductform')
-def searchproductform():
-    # Check if user is loggedin, return redirect to login page if not
-    if 'loggedin' not in session:
-        return redirect(url_for('login'))
-    elif 'usertype' == 'seller':
-        return redirect(url_for('home'))
-    else:
-        return render_template('form.html', username=session['username'])
-
-
-# Search Results Page
-@app.route('/search', methods=['POST', 'GET'])
-def search():
-    # Check if user is loggedin, return redirect to login page if not
-    if 'loggedin' not in session:
-        return redirect(url_for('login'))
-
-    if request.method == 'GET':
-        return "Fill out the Search Form"
-
-    if request.method == 'POST':
-        msg = ''
-        name = request.form['name']
-        product_id = request.form['product_id']
-        seller_id = request.form['seller_id']
-
-        results = None
-
-        if name:
-            results = Product.query.filter_by(name=name).all()
-        elif product_id:
-            results = Product.query.filter_by(product_id=product_id).all()
-        elif seller_id:
-            results = Product.query.filter_by(seller_id=seller_id).all()
-
-        data = results
-        if not results:
-            msg = 'No Results Found'
-
-        for i in data:
-            print(i)
-        return render_template('results.html', data=data, msg=msg)
     
 # Search bar
 @app.route('/searchbar', methods=['POST', 'GET'])
@@ -246,15 +200,20 @@ def searchbar():
     if 'loggedin' not in session:
         return redirect(url_for('login'))
     if request.method == 'GET':
-        return "Search Bar"
+        return "Fill out the Search bar"
     if request.method == 'POST':
         msg = ''
         name = request.form['name']
         
         results = None
 
+        # Search by Product Name
         if name:
             results = Product.query.filter_by(name=name).all()
+        
+        # Search by Seller Name
+        if not results:
+            results = Product.query.join(Seller).filter_by(name=name).all()
         
         data = results
         if not results:
@@ -262,7 +221,7 @@ def searchbar():
 
         for i in data:
             print(i)
-        return render_template('results.html', data=data, msg=msg)
+        return render_template('results.html', data=data, msg=msg, name=name)
 
 # Add Product Page
 @app.route('/addproduct', methods=['POST', 'GET'])

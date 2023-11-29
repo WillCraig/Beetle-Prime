@@ -3,11 +3,15 @@
 {% block title %}Seller Home{% endblock %}
 
 {% block content %}
+<div class="homeimage"> 
+    <img class="logo" src="{{ url_for('static', filename='bplogo.png') }}" alt="Beedle Prime Logo">
+</div>
+
 <h2>Seller Home Page</h2>
 <p>Welcome back, {{ username }}!</p>
 <a href="{{ url_for('addproduct') }}">Click to add Products</a>
 <p></p>
-<p1> Your Products Listed</p1>
+<h2> Your Products Listed</h2>
 <table border="1" cellpadding="5" cellspacing="5">
     <tr><th>Product ID</th><th>Product Name</th><th>Description</th><th>Price</th><th>Quantity</th><th>Product Image</th></tr>
     {% for row in data %}

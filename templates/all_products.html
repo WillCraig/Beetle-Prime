@@ -8,8 +8,9 @@
 <div class="product-list">
     {% for product in all_products %}
         <div class="product">
-            <img src="{{ product.img_link }}" alt="{{ product.name }}">
-            <h2>{{ product.name }}</h2>
+            <a href="/product_details/{{product.product_id}}"><img src="{{ product.img_link }}" alt="{{ product.name }}"></a>
+            <a href="/product_details/{{product.product_id}}"><h2>{{ product.name }}</h2></a>
+            <h3>Seller: {{ product.seller.name }}</h3>
             <p>{{ product.description }}</p>
             <p>Quantity: {{ product.product_quantity }}</p>
             <button class="price-button">Add: ${{ product.price }}</button>

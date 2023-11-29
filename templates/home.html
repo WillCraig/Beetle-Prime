@@ -11,7 +11,7 @@
 
 
 <div class="section">
-    <h2>Welcome</h2>
+    <h2>Welcome {{username}}</h2>
     <div class="search-container">
     
         <form action="/searchbar" method="POST">
@@ -19,7 +19,6 @@
             <button class="search-button" type="submit">Search</button>
         </form>
     </div>
-    <!-- <p>company image</p> -->
 </div>
 
 <div class="section">
@@ -29,8 +28,9 @@
 <div class="product-list">
     {% for product in data %}
         <div class="product">
-            <img src="{{ product.img_link }}" alt="{{ product.name }}">
-            <h2>{{ product.name }}</h2>
+            <a href="/product_details/{{product.product_id}}"><img src="{{ product.img_link }}" alt="{{ product.name }}"></a>
+            <a href="/product_details/{{product.product_id}}"><h2>{{ product.name }}</h2></a>
+            <h3>Seller: {{ product.seller.name }}</h3>
             <p>{{ product.description }}</p>
             <p>Quantity: {{ product.product_quantity }}</p>
             <button class="price-button">Add: ${{ product.price }}</button>
@@ -42,8 +42,7 @@
 </div>
 
 <div class="section">
-    <h2>Section 3</h2>
-    <p>Content for section 3 goes here.</p>
+    <h2>@Copyright Database Group 7</h2>
 </div>
 
 
@@ -51,7 +50,6 @@
 
 
 {#<p>Welcome back, {{ username }}!</p>#}
-{#<a href="{{ url_for('searchproductform') }}">Product Search</a>#}
 {#<br />#}
 {##}
 {#<h3>Products</h3>#}

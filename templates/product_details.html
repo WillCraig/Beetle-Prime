@@ -13,11 +13,12 @@
     </div>
     <div class="seller-details">
       <h3>Seller: {{ product.seller.name }}</h3>
-      <p>Contact: {{ product.seller.contact_info }}</p>
+      <p>Contact: {{ product.seller.email }}</p>
+      <p>Shipping From: <br> {{ product.seller.street }} <br> {{ product.seller.city }}, {{ product.seller.state }}, {{ product.seller.zipcode }}</p>
     </div>
 
     <div class="product-image">
-      <img src="{{ product.image }}" alt="product image">
+      <img src="{{ product.img_link }}" alt="product image">
     </div>
   <div>
         <form action="{{ url_for('add_to_order', product_id=product.product_id) }}" method="post">

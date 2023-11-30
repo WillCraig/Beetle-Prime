@@ -286,7 +286,6 @@ def product_details(p_id):
 def cart(c_id):
     order = Order.query.filter_by(customer_id=session['id']).first()
 
-    # FIXME: remove some of the unnecessary subtotal, tax, and shipping calculations
     if order:
         items = OrderProduct.query.filter_by(order_id=order.order_id).all()
 

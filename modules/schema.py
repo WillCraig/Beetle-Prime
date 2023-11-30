@@ -6,7 +6,21 @@ from modules.globals import db
 # -------------------------------------------------------------------------------------------------------
 
 # Customer Model
+
 class Customer(db.Model):
+    """
+    The Customer model represents a customer in the database.
+
+    Attributes:
+        customer_id (int): The primary key for the customer, auto-incremented.
+        username (str): The username of the customer.
+        password (str): The password of the customer.
+        email (str): The email of the customer.
+        street (str): The street address of the customer.
+        city (str): The city of the customer.
+        state (str): The state of the customer.
+        zipcode (int): The zipcode of the customer.
+    """
     customer_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(50), nullable=False)
     password = db.Column(db.String(255), nullable=False)
@@ -31,6 +45,7 @@ class Product(db.Model):
 
 # Order Model
 class Order(db.Model):
+    #
     order_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.customer_id'), nullable=False)
     order_date = db.Column(db.DateTime, default=datetime.datetime.now(), nullable=False)
@@ -77,9 +92,6 @@ class Purchase(db.Model):
         self.customer_id = order.customer_id
         self.order_date = order.order_date
 
-
-
-# PurchaseProduct Model
 
 # PurchaseProduct Model
 class PurchaseProduct(db.Model):

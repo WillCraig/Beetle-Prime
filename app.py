@@ -285,21 +285,21 @@ def product_details(p_id):
 @app.route('/cart/<c_id>', methods=['GET', 'POST'])
 def cart(c_id):
     order = Order.query.filter_by(customer_id=session['id']).first()
+
+    # FIXME: remove some of the unnecessary subtotal, tax, and shipping calculations
     if order:
-        #TODO: calculate total, subtotal, tax, shipping
         items = OrderProduct.query.filter_by(order_id=order.order_id).all()
-        subttl = 0
+
+        orderItems = []
         ttl = 0
-        tx = 0
-        shp = 0
 
         for i in items:
-            ttl += i.product.price * i.quantity
-            subttl += i.product.price * i.quantity
-            tx += float(i.product.price) * i.quantity * .07
-            shp += 5.00
+            ttl += i.quantity * Product.query.get(i.product_id).price
+            orderItems.append(Product.query.get(i.product_id))
 
-        return render_template('cart.html', order=order, order_id=order.order_id, orderItems=order.order_products, total=ttl, subtotal=subttl, tax=tx, shipping=shp)
+
+
+        return render_template('cart.html', order=order, order_id=order.order_id, orderItems=orderItems, total=ttl)
     else:
         # Handle product not found, redirect to an error page, or return an error message.
         return render_template('home.html', username=session['username'])
@@ -352,16 +352,23 @@ def purchase(ord_id):
 @app.route('/purchase_details/<pur_id>', methods=['GET', 'POST'])
 def purchase_details(pur_id):
     purchase = Purchase.query.get(pur_id)
+
+
+
     if purchase:
 
         purchase_items = PurchaseProduct.query.filter_by(purchase_id=pur_id).all()
         # get list of products based on the purchase_id data from purchase_items
+
+        total_price = 0
+
         products = []
         for item in purchase_items:
             product = Product.query.get(item.product_id)
             products.append(product)
+            total_price += product.price * item.quantity
 
-        return render_template('purchase_details.html', pur_id=pur_id, purchase=purchase, purchase_items=products)
+        return render_template('purchase_details.html', pur_id=pur_id, purchase=purchase, purchase_items=products, purcahse_total_price=total_price)
     else:
         # Handle product not found, redirect to an error page, or return an error message.
         return render_template('home.html', username=session['username'])

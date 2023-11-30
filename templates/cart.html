@@ -21,9 +21,6 @@
 
     <div class="right-column">
       <h2>Order Details</h2>
-      <h5>Subtotal: ${{ subtotal }}</h5>
-      <h5>Tax: ${{ tax }}</h5>
-      <h5>Shipping: ${{ shipping }}</h5>
       <h5>Total: ${{ total }}</h5>
 
       <a href="{{ url_for('purchase', ord_id=order_id)}}" target="_blank">

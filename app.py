@@ -184,7 +184,11 @@ def profile():
         # We need all the account info for the user so we can display it on the profile page
         if session['usertype'] == "customer":
             account = Customer.query.filter_by(customer_id=session['id']).first()
-            return render_template('profile.html', customer=account)
+
+            purchases = PurchaseProduct.query.join(Purchase).filter_by(customer_id=session['id']).all()
+            purchases = Purchase.query.filter_by(customer_id=session['id']).all()
+
+            return render_template('profile.html', customer=account, purchases=purchases)
 
         elif session['usertype'] == "seller":
             account = Seller.query.filter_by(seller_id=session['id']).first()
@@ -289,12 +293,14 @@ def cart(c_id):
     if order:
         items = OrderProduct.query.filter_by(order_id=order.order_id).all()
 
-        orderItems = []
+        orderItems = OrderProduct.query.join(Product).all()
         ttl = 0
 
         for i in items:
             ttl += i.quantity * Product.query.get(i.product_id).price
-            orderItems.append(Product.query.get(i.product_id))
+            #temptable.append(i.quantity)
+            #temptable.append(OrderProduct.query.get(i.product_id))
+            #orderItems.append(Product.query.get(i.product_id))
 
 
 
@@ -352,20 +358,19 @@ def purchase(ord_id):
 def purchase_details(pur_id):
     purchase = Purchase.query.get(pur_id)
 
-
-
     if purchase:
 
         purchase_items = PurchaseProduct.query.filter_by(purchase_id=pur_id).all()
         # get list of products based on the purchase_id data from purchase_items
+        products = PurchaseProduct.query.filter_by(purchase_id=pur_id).join(Product)
 
         total_price = 0
 
-        products = []
+        #products = []
         for item in purchase_items:
-            product = Product.query.get(item.product_id)
-            products.append(product)
-            total_price += product.price * item.quantity
+            #product = Product.query.get(item.product_id)
+            #products.append(product)
+            total_price += Product.query.get(item.product_id).price * item.quantity
 
         return render_template('purchase_details.html', pur_id=pur_id, purchase=purchase, purchase_items=products, purcahse_total_price=total_price)
     else:

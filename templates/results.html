@@ -30,7 +30,13 @@
     <h2>Product search results: {{msg}} </h2>
     <h2> Showing Results for "{{name}}" </h2>
 {#    Horizontal list of 5 products #}
-
+<div class="search-container">
+    
+    <form action="/searchbar" method="POST">
+        <input class="search-input" type="text" name = "name" placeholder="Search..."/>
+        <button class="search-button" type="submit">Search</button>
+    </form>
+</div>
 <div class="product-list">
     {% for product in data %}
         <div class="product">
@@ -39,7 +45,10 @@
             <h3>Seller: {{ product.seller.name }}</h3>
             <p>{{ product.description }}</p>
             <p>Quantity: {{ product.product_quantity }}</p>
-            <button class="price-button">Add: ${{ product.price }}</button>
+            <form action="{{ url_for('add_to_order', product_id=product.product_id) }}" method="post">
+
+                <button class="price-button" type="submit">Add: ${{ product.price }}</button>
+                </form>
             <!-- Add more details as needed -->
         </div>
     {% endfor %}

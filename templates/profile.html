@@ -49,6 +49,12 @@
             <td>{{ customer['city'] }}, {{ customer['state'] }} {{ customer['zipcode'] }}</td>
         </tr>
     </table>
+    {% for item in purchases %}
+    <div class="product-list">
+        <a href="{{url_for('purchase_details', pur_id=item.purchase_id)}}"> Purchase {{ item.purchase_id }} </a>
+        <p>Purchased: {{ item.purchase_date }}</p>
+    </div>
+    {% endfor %}
     {% endif %}
 </div>
 {% endblock %}

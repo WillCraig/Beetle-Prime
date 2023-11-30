@@ -33,8 +33,10 @@
             <h3>Seller: {{ product.seller.name }}</h3>
             <p>{{ product.description }}</p>
             <p>Quantity: {{ product.product_quantity }}</p>
-            <button class="price-button">Add: ${{ product.price }}</button>
-            
+            <form action="{{ url_for('add_to_order', product_id=product.product_id) }}" method="post">
+
+                <button class="price-button" type="submit">Add: ${{ product.price }}</button>
+                </form>
             <!-- Add more details as needed -->
         </div>
     {% endfor %}

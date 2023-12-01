@@ -50,5 +50,28 @@
         </tr>
     </table>
     {% endif %}
+
+    {% if purchases %}
+    <h2>Purchase History:</h2>
+    <table>
+        <tr>
+            <th>Purchase Date</th>
+{#            <th>Purchase ID</th>#}
+        </tr>
+        {% for purchase in purchases %}
+            <tr>
+
+                <td><a href="{{ url_for('purchase_details', pur_id=purchase["purchase_id"])}}">{{ purchase['purchase_date'] }}</a></td>
+{#                <td>{{ purchase['purchase_date'] }}</td>#}
+{#                <td>{{ purchase['purchase_id'] }}</td>#}
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No purchases made yet.</p>
+{% endif %}
+
+
+
 </div>
 {% endblock %}

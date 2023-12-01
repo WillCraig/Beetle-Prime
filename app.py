@@ -184,7 +184,12 @@ def profile():
         # We need all the account info for the user so we can display it on the profile page
         if session['usertype'] == "customer":
             account = Customer.query.filter_by(customer_id=session['id']).first()
-            return render_template('profile.html', customer=account)
+
+            purchases = Purchase.query.filter_by(customer_id=session['id']).all()
+
+
+
+            return render_template('profile.html', customer=account, purchases=purchases)
 
         elif session['usertype'] == "seller":
             account = Seller.query.filter_by(seller_id=session['id']).first()

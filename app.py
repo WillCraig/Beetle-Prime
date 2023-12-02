@@ -285,6 +285,88 @@ def product_details(p_id):
         # Handle product not found, redirect to an error page, or return an error message.
         return render_template('home.html', username=session['username'])
 
+@app.route('/product_updates/<p_id>', methods=['GET', 'POST'])
+def product_updates(p_id):
+    product = Product.query.get(p_id)
+    if product:
+        if 'loggedin' not in session:
+            return redirect(url_for('login'))
+        elif 'usertype' == 'customer':
+            return redirect(url_for('home'))
+        else:
+            msg = ''
+            if (request.method == 'POST' and 'name' in request.form):
+                name = request.form['name']
+                if name != '':
+                    item = Product.query.filter_by(name=name).first()
+
+                    # If product exists show error and validation checks
+                    if item:
+                        msg = 'Product already Has That Name!'
+                    elif not re.match(r'[A-Za-z0-9]+', name):
+                        msg = 'Product name must contain only characters and numbers!'
+                    else:
+                        Product.query.filter_by(product_id=p_id).update({'name': name})
+                        db.session.commit()
+                        msg = 'You have successfully Updated Your Product!!'
+
+            if (request.method == 'POST' and 'description' in request.form):
+                description = request.form['description']
+                if description != '':
+                    item = Product.query.filter_by(product_id=p_id, description=description).first()
+
+                    # If product exists show error and validation checks
+                    if item:
+                        msg = 'Product already Has That Description!'
+                    else:
+                        Product.query.filter_by(product_id=p_id).update({'description': description})
+                        db.session.commit()
+                        msg = 'You have successfully Updated Your Product!!'
+            
+            if (request.method == 'POST' and 'price' in request.form):
+                price = request.form['price']
+                if price != '':
+                    item = Product.query.filter_by(product_id=p_id, price=price).first()
+
+                    # If product exists show error and validation checks
+                    if item:
+                        msg = 'Product already Has That price!'
+                    else:
+                        Product.query.filter_by(product_id=p_id).update({'price': price})
+                        db.session.commit()
+                        msg = 'You have successfully Updated Your Product!!'
+            
+            if (request.method == 'POST' and 'quantity' in request.form):
+                quantity = request.form['quantity']
+                if quantity != '':
+                    item = Product.query.filter_by(product_id=p_id, product_quantity=quantity).first()
+
+                    # If product exists show error and validation checks
+                    if item:
+                        msg = 'Product already Has That Quantity!'
+                    else:
+                        Product.query.filter_by(product_id=p_id).update({'product_quantity': quantity})
+                        db.session.commit()
+                        msg = 'You have successfully Updated Your Product!!'
+            
+            if (request.method == 'POST' and 'img_link' in request.form):
+                img_link = request.form['img_link']
+                if img_link != '':
+                    item = Product.query.filter_by(product_id=p_id, img_link=img_link).first()
+
+                    # If product exists show error and validation checks
+                    if item:
+                        msg = 'Product already Has That Image!'
+                    else:
+                        Product.query.filter_by(product_id=p_id).update({'img_link': img_link})
+                        db.session.commit()
+                        msg = 'You have successfully Updated Your Product!!'     
+            
+            return render_template('product_updates.html', product=product, msg=msg)
+    else:
+        # Handle product not found, redirect to an error page, or return an error message.
+        return render_template('home.html', username=session['username'])
+
 
 @app.route('/cart/<c_id>', methods=['GET', 'POST'])
 def cart(c_id):

@@ -8,21 +8,26 @@
 </div>
 
 <h2>Seller Home Page</h2>
-<p>Welcome back, {{ username }}!</p>
-<a href="{{ url_for('addproduct') }}">Click to add Products</a>
-<p></p>
+<div class="section">
+    <h2>Welcome {{username}}</h2>
+    <a href="{{ url_for('addproduct') }}">Click to add Products</a>
+</div>
 <h2> Your Products Listed</h2>
-<table border="1" cellpadding="5" cellspacing="5">
-    <tr><th>Product ID</th><th>Product Name</th><th>Description</th><th>Price</th><th>Quantity</th><th>Product Image</th></tr>
-    {% for row in data %}
-    <tr>
-        <td>{{row.product_id}}</td>
-        <td><a href="{{ url_for('product_details', p_id=row.product_id) }}">{{row.name}}</a></td>
-        <td>{{row.description}}</td>
-        <td>{{row.price}}</td>
-        <td>{{row.product_quantity}}</td>
-        <td><img src="{{ row.img_link }}" width="20%"/></td>
-    </tr>
+<div class="product-list">
+    {% for product in data %}
+        <div class="product">
+            <a href="/product_details/{{product.product_id}}"><img src="{{ product.img_link }}" alt="{{ product.name }}"></a>
+            <a href="/product_details/{{product.product_id}}"><h2>{{ product.name }}</h2></a>
+            <h3>Seller: {{ product.seller.name }}</h3>
+            <p>{{ product.description }}</p>
+            <p>Quantity: {{ product.product_quantity }}</p>
+            <form action="{{ url_for('add_to_order', product_id=product.product_id) }}" method="post">
+
+                <button class="price-button" type="submit">Add: ${{ product.price }}</button>
+                </form>
+            <!-- Add more details as needed -->
+        </div>
     {% endfor %}
-    </table>
+</div>
+</div>
 {% endblock %}

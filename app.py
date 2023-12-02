@@ -306,8 +306,12 @@ def cart(c_id):
 
         return render_template('cart.html', order=order, order_id=order.order_id, orderItems=orderItems, total=ttl)
     else:
-        # Handle product not found, redirect to an error page, or return an error message.
-        return render_template('home.html', username=session['username'])
+        if session['usertype'] == "customer":
+            results = Product.query.order_by(func.random()).limit(3).all()
+            return render_template('home.html', username=session['username'], c_id=session['id'], data=results)
+        elif session['usertype'] == "seller":
+            results = Product.query.filter_by(seller_id=session['id']).all()
+            return render_template('sellerhome.html', username=session['username'], data=results)
 
 
 @app.route('/add_to_order/<int:product_id>', methods=['POST'])
@@ -320,6 +324,17 @@ def add_to_order(product_id):
         OrderProduct.add_product_to_order(order_id=order.order_id, product_id=product_id, quantity=quantity)
 
     return redirect(url_for('home'))
+
+@app.route('/remove_from_order/<int:product_id>', methods=['GET', 'POST'])
+def remove_from_order(product_id):
+    user_id = session['id']  # FIXME: make sure this is right.
+    order = Order.query.filter_by(customer_id=user_id).first()
+
+    if order:
+        OrderProduct.query.filter_by(product_id=product_id).delete()
+        db.session.commit()
+
+    return redirect(url_for('cart', c_id=session['id']))
 
 
 @app.route('/purchase/<ord_id>', methods=['GET', 'POST'])
@@ -340,6 +355,8 @@ def purchase(ord_id):
         # Create entries in PurchaseProducts for each product associated with the order
         for op in order_products:
             purchase_product = PurchaseProduct(purchase_id=new_purchase.purchase_id, product_id=op.product_id, quantity=op.quantity)
+            # Update Product Quantity
+            Product.query.filter_by(product_id=op.product_id).update({'product_quantity': Product.product_quantity - op.quantity})
             db.session.add(purchase_product)
 
         db.session.commit()

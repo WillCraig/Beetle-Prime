@@ -167,7 +167,7 @@ def home():
         # User is loggedin show them the home page
         if session['usertype'] == "customer":
             # get 3 random products
-            results = Product.query.order_by(func.random()).limit(3).all()
+            results = Product.query.filter(Product.product_quantity > 0).order_by(func.random()).limit(3).all()
             return render_template('home.html', username=session['username'], c_id=session['id'], data=results)
         if session['usertype'] == "seller":
             results = Product.query.filter_by(seller_id=session['id']).all()

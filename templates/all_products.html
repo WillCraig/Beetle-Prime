@@ -7,6 +7,7 @@
 
 <div class="product-list">
     {% for product in all_products %}
+        {% if product.product_quantity > 0 %}
         <div class="product">
             <a href="/product_details/{{product.product_id}}"><img src="{{ product.img_link }}" alt="{{ product.name }}"></a>
             <a href="/product_details/{{product.product_id}}"><h2>{{ product.name }}</h2></a>
@@ -20,6 +21,7 @@
             </form>
             <!-- Add more details as needed -->
         </div>
+        {% endif %}
     {% endfor %}
 </div>
 {#</form>#}

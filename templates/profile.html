@@ -41,6 +41,10 @@
             <td>{{ customer['password'] }}</td>
         </tr>
         <tr>
+            <td>Email:</td>
+            <td>{{ customer['email'] }}</td>
+        </tr>
+        <tr>
             <td>Shipping Address: </td>
             <td>{{ customer['street'] }}</td>
         </tr>
@@ -50,6 +54,9 @@
         </tr>
     </table>
     {% endif %}
+</div>
+<div class="section">
+    <h2>@Copyright Database Group 7</h2>
 
     {% if purchases %}
     <h2>Purchase History:</h2>

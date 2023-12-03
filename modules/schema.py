@@ -100,4 +100,6 @@ class PurchaseProduct(db.Model):
     purchase_id = db.Column(db.Integer, db.ForeignKey('purchase.purchase_id'), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('product.product_id'), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
+    product = db.relationship('Product', backref=db.backref('purchase_products', lazy='dynamic'))
+    purchase = db.relationship('Purchase', backref=db.backref('purchase_products', lazy='dynamic'))
 

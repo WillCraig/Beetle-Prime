@@ -167,7 +167,7 @@ def home():
         # User is loggedin show them the home page
         if session['usertype'] == "customer":
             # get 3 random products
-            results = Product.query.order_by(func.random()).limit(3).all()
+            results = Product.query.filter(Product.product_quantity > 0).order_by(func.random()).limit(3).all()
             return render_template('home.html', username=session['username'], c_id=session['id'], data=results)
         if session['usertype'] == "seller":
             results = Product.query.filter_by(seller_id=session['id']).all()
@@ -185,9 +185,8 @@ def profile():
         if session['usertype'] == "customer":
             account = Customer.query.filter_by(customer_id=session['id']).first()
 
+            purchases = PurchaseProduct.query.join(Purchase).filter_by(customer_id=session['id']).all()
             purchases = Purchase.query.filter_by(customer_id=session['id']).all()
-
-
 
             return render_template('profile.html', customer=account, purchases=purchases)
 
@@ -286,6 +285,88 @@ def product_details(p_id):
         # Handle product not found, redirect to an error page, or return an error message.
         return render_template('home.html', username=session['username'])
 
+@app.route('/product_updates/<p_id>', methods=['GET', 'POST'])
+def product_updates(p_id):
+    product = Product.query.get(p_id)
+    if product:
+        if 'loggedin' not in session:
+            return redirect(url_for('login'))
+        elif 'usertype' == 'customer':
+            return redirect(url_for('home'))
+        else:
+            msg = ''
+            if (request.method == 'POST' and 'name' in request.form):
+                name = request.form['name']
+                if name != '':
+                    item = Product.query.filter_by(name=name).first()
+
+                    # If product exists show error and validation checks
+                    if item:
+                        msg = 'Product already Has That Name!'
+                    elif not re.match(r'[A-Za-z0-9]+', name):
+                        msg = 'Product name must contain only characters and numbers!'
+                    else:
+                        Product.query.filter_by(product_id=p_id).update({'name': name})
+                        db.session.commit()
+                        msg = 'You have successfully Updated Your Product!!'
+
+            if (request.method == 'POST' and 'description' in request.form):
+                description = request.form['description']
+                if description != '':
+                    item = Product.query.filter_by(product_id=p_id, description=description).first()
+
+                    # If product exists show error and validation checks
+                    if item:
+                        msg = 'Product already Has That Description!'
+                    else:
+                        Product.query.filter_by(product_id=p_id).update({'description': description})
+                        db.session.commit()
+                        msg = 'You have successfully Updated Your Product!!'
+
+            if (request.method == 'POST' and 'price' in request.form):
+                price = request.form['price']
+                if price != '':
+                    item = Product.query.filter_by(product_id=p_id, price=price).first()
+
+                    # If product exists show error and validation checks
+                    if item:
+                        msg = 'Product already Has That price!'
+                    else:
+                        Product.query.filter_by(product_id=p_id).update({'price': price})
+                        db.session.commit()
+                        msg = 'You have successfully Updated Your Product!!'
+
+            if (request.method == 'POST' and 'quantity' in request.form):
+                quantity = request.form['quantity']
+                if quantity != '':
+                    item = Product.query.filter_by(product_id=p_id, product_quantity=quantity).first()
+
+                    # If product exists show error and validation checks
+                    if item:
+                        msg = 'Product already Has That Quantity!'
+                    else:
+                        Product.query.filter_by(product_id=p_id).update({'product_quantity': quantity})
+                        db.session.commit()
+                        msg = 'You have successfully Updated Your Product!!'
+
+            if (request.method == 'POST' and 'img_link' in request.form):
+                img_link = request.form['img_link']
+                if img_link != '':
+                    item = Product.query.filter_by(product_id=p_id, img_link=img_link).first()
+
+                    # If product exists show error and validation checks
+                    if item:
+                        msg = 'Product already Has That Image!'
+                    else:
+                        Product.query.filter_by(product_id=p_id).update({'img_link': img_link})
+                        db.session.commit()
+                        msg = 'You have successfully Updated Your Product!!'
+
+            return render_template('product_updates.html', product=product, msg=msg)
+    else:
+        # Handle product not found, redirect to an error page, or return an error message.
+        return render_template('home.html', username=session['username'])
+
 
 @app.route('/cart/<c_id>', methods=['GET', 'POST'])
 def cart(c_id):
@@ -294,19 +375,25 @@ def cart(c_id):
     if order:
         items = OrderProduct.query.filter_by(order_id=order.order_id).all()
 
-        orderItems = []
+        orderItems = OrderProduct.query.join(Product).all()
         ttl = 0
 
         for i in items:
             ttl += i.quantity * Product.query.get(i.product_id).price
-            orderItems.append(Product.query.get(i.product_id))
+            #temptable.append(i.quantity)
+            #temptable.append(OrderProduct.query.get(i.product_id))
+            #orderItems.append(Product.query.get(i.product_id))
 
 
 
         return render_template('cart.html', order=order, order_id=order.order_id, orderItems=orderItems, total=ttl)
     else:
-        # Handle product not found, redirect to an error page, or return an error message.
-        return render_template('home.html', username=session['username'])
+        if session['usertype'] == "customer":
+            results = Product.query.order_by(func.random()).limit(3).all()
+            return render_template('home.html', username=session['username'], c_id=session['id'], data=results)
+        elif session['usertype'] == "seller":
+            results = Product.query.filter_by(seller_id=session['id']).all()
+            return render_template('sellerhome.html', username=session['username'], data=results)
 
 
 @app.route('/add_to_order/<int:product_id>', methods=['POST'])
@@ -319,6 +406,17 @@ def add_to_order(product_id):
         OrderProduct.add_product_to_order(order_id=order.order_id, product_id=product_id, quantity=quantity)
 
     return redirect(url_for('home'))
+
+@app.route('/remove_from_order/<int:product_id>', methods=['GET', 'POST'])
+def remove_from_order(product_id):
+    user_id = session['id']  # FIXME: make sure this is right.
+    order = Order.query.filter_by(customer_id=user_id).first()
+
+    if order:
+        OrderProduct.query.filter_by(product_id=product_id).delete()
+        db.session.commit()
+
+    return redirect(url_for('cart', c_id=session['id']))
 
 
 @app.route('/purchase/<ord_id>', methods=['GET', 'POST'])
@@ -339,6 +437,8 @@ def purchase(ord_id):
         # Create entries in PurchaseProducts for each product associated with the order
         for op in order_products:
             purchase_product = PurchaseProduct(purchase_id=new_purchase.purchase_id, product_id=op.product_id, quantity=op.quantity)
+            # Update Product Quantity
+            Product.query.filter_by(product_id=op.product_id).update({'product_quantity': Product.product_quantity - op.quantity})
             db.session.add(purchase_product)
 
         db.session.commit()
@@ -357,20 +457,19 @@ def purchase(ord_id):
 def purchase_details(pur_id):
     purchase = Purchase.query.get(pur_id)
 
-
-
     if purchase:
 
         purchase_items = PurchaseProduct.query.filter_by(purchase_id=pur_id).all()
         # get list of products based on the purchase_id data from purchase_items
+        products = PurchaseProduct.query.filter_by(purchase_id=pur_id).join(Product)
 
         total_price = 0
 
-        products = []
+        #products = []
         for item in purchase_items:
-            product = Product.query.get(item.product_id)
-            products.append(product)
-            total_price += product.price * item.quantity
+            #product = Product.query.get(item.product_id)
+            #products.append(product)
+            total_price += Product.query.get(item.product_id).price * item.quantity
 
         return render_template('purchase_details.html', pur_id=pur_id, purchase=purchase, purchase_items=products, purcahse_total_price=total_price)
     else:

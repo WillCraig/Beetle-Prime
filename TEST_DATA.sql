@@ -37,7 +37,7 @@ INSERT INTO product (seller_id, name, description, price, product_quantity, img_
 VALUES (3, 'Mushroom', 'Increases your size, strength, and life', 14.99, 1, 'https://static.wikia.nocookie.net/nintendo/images/5/5b/Mushroom1.jpg/revision/latest?cb=20111104224030&path-prefix=en');
 
 INSERT INTO product (seller_id, name, description, price, product_quantity, img_link)
-VALUES (3, 'Fire Flower', 'Increases size, strength, and life aswell as providing a fireball', 29.99, 1, 'https://static.wikia.nocookie.net/nintendo/images/5/55/MK8_Fire_Flower.png/revision/latest/scale-to-width-down/1000?cb=20170206125257&path-prefix=en');
+VALUES (3, 'Fire Flower', 'Increases size and life as well as fireball powers', 29.99, 1, 'https://static.wikia.nocookie.net/nintendo/images/5/55/MK8_Fire_Flower.png/revision/latest/scale-to-width-down/1000?cb=20170206125257&path-prefix=en');
 
 INSERT INTO product (seller_id, name, description, price, product_quantity, img_link)
 VALUES (3, 'Starman', 'Grants you temporary invincibility', 49.99, 1, 'https://static.wikia.nocookie.net/nintendo/images/2/2e/Star.png/revision/latest?cb=20150501195537&path-prefix=en');

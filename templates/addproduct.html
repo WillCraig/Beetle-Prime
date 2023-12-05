@@ -4,6 +4,7 @@
 
 {% block content %}
 <h2>Add Product Page</h2>
+<div class="product-container">
 <p>Hi, {{ username }} fill out the form below to add Products for your online store.</p>
 <form action="/addproduct" method = "POST">
 	<p><h2>Add Product:</h2> 
@@ -18,6 +19,7 @@
 	<button class="price-button" type="submit">Add Product</button>
 </form>
 <h2> {{ msg }} </h2>
+</div>
 <div class="section">
     <h2>@Copyright Database Group 7</h2>
 </div>

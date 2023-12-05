@@ -58,20 +58,20 @@ VALUES (3, 'Garfield Plush', 'Chris Pratt in marketible Plushie Form', 300.15, 7
 
 # Anime
 INSERT INTO product (seller_id, name, description, price, product_quantity, img_link)
-VALUES (4, 'Charizard VSTART', 'Pokemon Card Secret Rare', 87.81, 1, 'https://m.media-amazon.com/images/I/610EPTmOT5L._AC_.jpg');
+VALUES (4, 'Charizard VSTART', 'Pokemon Card Secret Rare', 87.81, 20, 'https://m.media-amazon.com/images/I/610EPTmOT5L._AC_.jpg');
 
 INSERT INTO product (seller_id, name, description, price, product_quantity, img_link)
-VALUES (4, 'Arceus VMAX', 'Golden Pokemon Gifts For Kids', 8.99, 1, 'https://i.ebayimg.com/images/g/4HMAAOSwSx9kRKlW/s-l1600.jpg');
+VALUES (4, 'Arceus VMAX', 'Golden Pokemon Gifts For Kids', 8.99, 10, 'https://i.ebayimg.com/images/g/4HMAAOSwSx9kRKlW/s-l1600.jpg');
 
 INSERT INTO product (seller_id, name, description, price, product_quantity, img_link)
-VALUES (4, 'Naruto Keychain', 'Naruto Uzumaki With Ramen Bowl', 10.98, 1, 'https://target.scene7.com/is/image/Target/GUEST_aba351e8-c054-400c-80a1-a5ca588ebfe2?wid=1200&hei=1200&qlt=80&fmt=webp');
+VALUES (4, 'Naruto Keychain', 'Naruto Uzumaki With Ramen Bowl', 10.98, 15, 'https://target.scene7.com/is/image/Target/GUEST_aba351e8-c054-400c-80a1-a5ca588ebfe2?wid=1200&hei=1200&qlt=80&fmt=webp');
 
 INSERT INTO product (seller_id, name, description, price, product_quantity, img_link)
-VALUES (4, 'Nezuko Kamado', 'Demon Slayer: Bandai Spirits Souvenir', 18.99, 5, 'https://m.media-amazon.com/images/I/51ZrvX4QTwL._AC_SX679_.jpg');
+VALUES (4, 'Nezuko Kamado', 'Demon Slayer: Bandai Spirits Souvenir', 18.99, 10, 'https://m.media-amazon.com/images/I/51ZrvX4QTwL._AC_SX679_.jpg');
 
 # NFT
 INSERT INTO product (seller_id, name, description, price, product_quantity, img_link)
-VALUES (5, 'NFT', 'Steady Stack Legends #151', 1150.20, 1, 'https://i.seadn.io/gcs/files/3a0c198554385093613bd2f8abb289c8.gif?w=500&auto=format');
+VALUES (5, 'NFT', 'Steady Stack Legends #151', 1150.20, 8, 'https://i.seadn.io/gcs/files/3a0c198554385093613bd2f8abb289c8.gif?w=500&auto=format');
 
 INSERT INTO product (seller_id, name, description, price, product_quantity, img_link)
-VALUES (5, 'NFT', 'Steady Stack Legends #133', 5500, 1, 'https://i.seadn.io/s/raw/files/40d21cb3b1e16df54e284a39fe25c030.gif?auto=format&dpr=1&w=1000');
+VALUES (5, 'NFT', 'Steady Stack Legends #133', 5500, 8, 'https://i.seadn.io/s/raw/files/40d21cb3b1e16df54e284a39fe25c030.gif?auto=format&dpr=1&w=1000');

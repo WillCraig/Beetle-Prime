@@ -5,16 +5,17 @@
 {% block content %}
   <div class="cart-page">
     <div class="left-column">
-      <h2>CART Page</h2>
+      <h2>CART</h2>
       <div class="cart-list">
         {% for cartItem in orderItems %}
-          <div class="product">
+          <div class="product-cart">
             <img src="{{ cartItem.product.img_link }}" alt="{{ cartItem.product.name }}">
             <h2>{{ cartItem.product.name }}</h2>
             <p>{{ cartItem.product.description }}</p>
             <p>Price: ${{ cartItem.product.price }}</p>
             <p>Quantity: {{ cartItem.quantity }}</p>
             <p> <a href="{{ url_for('remove_from_order', product_id=cartItem.product.product_id) }}"> -- Remove From Cart -- </a></p>
+                
           </div>
         {% endfor %}
       </div>
@@ -22,10 +23,10 @@
 
     <div class="right-column">
       <h2>Order Details</h2>
-      <h5>Total: ${{ total }}</h5>
+      <h3>Total: ${{ total }}</h3>
 
       <a href="{{ url_for('purchase', ord_id=order_id)}}" target="_blank">
-        <button class="price-button" type="submit">Checkout</button>
+        <button class="search-button" type="submit">Checkout</button>
       </a>
     </div>
   </div>

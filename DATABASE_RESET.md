@@ -14,7 +14,7 @@ db.create_all()
 
 Shell is now reset
 
-Sample Data:
+<!-- Sample Data:
 ```mysql
 INSERT INTO customer (username, password, email, street, city, state, zipcode) VALUES
 ('s', 's', 'john.doe@email.com', '123 Oak St', 'Cityville', 'Stateville', 54321);
@@ -63,6 +63,6 @@ VALUES (1, 'Walulgi', 'Mario Game', 15.99, 3, 'https://mario.nintendo.com/static
 
 INSERT INTO product (seller_id, name, description, price, product_quantity, img_link)
 VALUES (1, 'Bowser', 'Mario Game', 18.99, 2, 'https://mario.nintendo.com/static/233682a28cdb7b3cc0232a81a0b6c4e7/13fb2/bowser-unstack-open.png');
-
+ -->
 
 ```

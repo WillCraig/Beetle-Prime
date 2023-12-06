@@ -7,15 +7,15 @@
     <img class="logo" src="{{ url_for('static', filename='bplogo.png') }}" alt="Beedle Prime Logo">
 </div>
 
-<h2>Seller Home Page</h2>
+<h2 style="color: white; font-size: 40px;">Seller Home Page</h2>
 <div class="section">
     <h2>Welcome {{username}}</h2>
     <form action="{{ url_for('addproduct') }}" method="post">
-
-        <button class="price-button" type="submit">Click to add Products</button>
+        <br>
+        <button class="search-button" type="submit">Click to add Products</button>
         </form>
 </div>
-<h2> Your Products Listed</h2>
+<h2 style="color: white; font-size: 40px;"> Your Products Listed</h2>
 <div class="product-list">
     {% for product in data %}
         <div class="product">

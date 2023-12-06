@@ -35,7 +35,6 @@ body::before {
 .login, .register {
     width: 400px;
     background-color: #ffffff;
-    box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.3);
     margin: 100px auto;
     border-radius: 10px;
     border: 4px solid #F5AC0B;
@@ -98,7 +97,7 @@ body::before {
     font-weight: bold;
     color: #ffffff;
     transition: background-color 0.2s;
-    border-radius: 0 0px 10px 10px;
+    border-radius: 0 0 10px 10px;
 }
 .login form input[type="submit"]:hover, .register form input[type="submit"]:hover {
     background-color: #5271FF;
@@ -184,7 +183,7 @@ body.loggedin {
     display: flex;
     max-width: 250px; 
     margin: 0 auto; 
-    padding: 0px; 
+    padding: 0;
    
 }
 
@@ -193,7 +192,7 @@ body.loggedin {
     position: relative;
     max-width: 100%; 
     margin: 0 auto; 
-    padding: 0px; 
+    padding: 0;
 }
 
 .search-container {
@@ -201,14 +200,14 @@ body.loggedin {
     margin-top: 20px;
     display: flex;
     font-size: 20px;
-    font-family: 500px;
+    /*font-family: 500px;*/
     justify-content: flex-end;
 }
 .search-input,
 .search-button {
     padding: 8px;
     font-size: 20px;
-    font-family: 500px;
+    /*font-family: 500px;*/
 
     margin-top: 10px;
 }

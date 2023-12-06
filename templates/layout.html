@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<meta charset="utf-8">
 		<title>{% block title %}{% endblock %}</title>
@@ -9,17 +9,17 @@
 	</head>
 	<body class="loggedin">
 		<nav class="navtop">
-			
+
 				<!-- <h1>Beedle Prime!!</h1> -->
-				<!-- <img class="logo" src="{{ url_for('static', filename='bplogo.png') }}" alt="Beedle Prime Logo"> -->	
-                <a href="{{ url_for('home') }}"><i class="fas fa-home"></i>Home</a>	
+				<!-- <img class="logo" src="{{ url_for('static', filename='bplogo.png') }}" alt="Beedle Prime Logo"> -->
+                <a href="{{ url_for('home') }}"><i class="fas fa-home"></i>Home</a>
 				<div>
                 <a href="{{ url_for('all_products') }}"><i class="fas fa-shopping-bag"></i>All Products</a>
                 <a href="{{ url_for('cart', c_id=session['id']) }}"><i class="fas fa-shopping-cart"></i>Cart</a>
 				<a href="{{ url_for('profile') }}"><i class="fas fa-user-circle"></i>Profile</a>
 				<a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i>Logout</a>
 				</div>
-			
+
 		</nav>
 		<div class="content">
 			{% block content %}{% endblock %}

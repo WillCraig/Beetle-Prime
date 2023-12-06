@@ -78,7 +78,8 @@ def register():
     msg = ''
     # Check if "username", "password" and "email" POST requests exist (user submitted form)
     if (request.method == 'POST' and 'username' in request.form and 'password' in
-            request.form and 'email' in request.form and 'street' in request.form and 'city' in request.form and 'state' in request.form and 'zipcode' in request.form):
+            request.form and 'email' in request.form and 'street' in request.form and 'city' in request.form
+            and 'state' in request.form and 'zipcode' in request.form):
         # Create variables for easy access
         username = request.form['username']
         password = request.form['password']
@@ -122,7 +123,8 @@ def sellerregister():
     msg = ''
     # Check if "username", "password" and "email" POST requests exist (user submitted form)
     if (request.method == 'POST' and 'name' in request.form and 'password' in
-            request.form and 'email' in request.form and 'street' in request.form and 'city' in request.form and 'state' in request.form and 'zipcode' in request.form):
+            request.form and 'email' in request.form and 'street' in request.form and 'city' in request.form
+            and 'state' in request.form and 'zipcode' in request.form):
         # Create variables for easy access
         name = request.form['name']
         password = request.form['password']
@@ -181,11 +183,11 @@ def home():
 def profile():
     # Check if user is loggedin
     if 'loggedin' in session:
-        # We need all the account info for the user so we can display it on the profile page
+        # We need all the account info for the user, so we can display it on the profile page
         if session['usertype'] == "customer":
             account = Customer.query.filter_by(customer_id=session['id']).first()
 
-            purchases = PurchaseProduct.query.join(Purchase).filter_by(customer_id=session['id']).all()
+            # purchases = PurchaseProduct.query.join(Purchase).filter_by(customer_id=session['id']).all()
             purchases = Purchase.query.filter_by(customer_id=session['id']).all()
 
             return render_template('profile.html', customer=account, purchases=purchases)
@@ -196,7 +198,8 @@ def profile():
 
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
-    
+
+
 # Search bar
 @app.route('/searchbar', methods=['POST', 'GET'])
 def searchbar():
@@ -208,17 +211,17 @@ def searchbar():
     if request.method == 'POST':
         msg = ''
         name = request.form['name']
-        
+
         results = None
 
         # Search by Product Name
         if name:
             results = Product.query.filter_by(name=name).all()
-        
+
         # Search by Seller Name
         if not results:
             results = Product.query.join(Seller).filter_by(name=name).all()
-        
+
         data = results
         if not results:
             msg = 'No Results Found'
@@ -226,6 +229,7 @@ def searchbar():
         for i in data:
             print(i)
         return render_template('results.html', data=data, msg=msg, name=name)
+
 
 # Add Product Page
 @app.route('/addproduct', methods=['POST', 'GET'])
@@ -263,7 +267,8 @@ def addproduct():
                                       product_quantity=quantity, img_link=img_link)
                 else:
                     product = Product(seller_id=session['id'], name=name, description=description, price=price,
-                                      product_quantity=quantity, img_link='https://cdn.vox-cdn.com/thumbor/Vu29oQjMk6yyUy9PmGNeWQqznHI=/39x94:1887x974/1200x800/filters:focal(934x381:1240x687)/cdn.vox-cdn.com/uploads/chorus_image/image/72845570/The_Legend_of_Zelda._Skyward_Sword_Screen_Shot_7_19_21__5.58_PM.0.png')
+                                      product_quantity=quantity,
+                                      img_link='https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FFile%3AIcon-round-Question_mark.jpg&psig=AOvVaw3salWVD2MijoBnckBIispR&ust=1701966534581000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCMD4gMid-4IDFQAAAAAdAAAAABAk')
 
                 db.session.add(product)
                 db.session.commit()
@@ -285,6 +290,7 @@ def product_details(p_id):
         # Handle product not found, redirect to an error page, or return an error message.
         return render_template('home.html', username=session['username'])
 
+
 @app.route('/product_updates/<p_id>', methods=['GET', 'POST'])
 def product_updates(p_id):
     product = Product.query.get(p_id)
@@ -295,7 +301,7 @@ def product_updates(p_id):
             return redirect(url_for('home'))
         else:
             msg = ''
-            if (request.method == 'POST' and 'name' in request.form):
+            if request.method == 'POST' and 'name' in request.form:
                 name = request.form['name']
                 if name != '':
                     item = Product.query.filter_by(name=name).first()
@@ -310,7 +316,7 @@ def product_updates(p_id):
                         db.session.commit()
                         msg = 'You have successfully Updated Your Product!!'
 
-            if (request.method == 'POST' and 'description' in request.form):
+            if request.method == 'POST' and 'description' in request.form:
                 description = request.form['description']
                 if description != '':
                     item = Product.query.filter_by(product_id=p_id, description=description).first()
@@ -323,7 +329,7 @@ def product_updates(p_id):
                         db.session.commit()
                         msg = 'You have successfully Updated Your Product!!'
 
-            if (request.method == 'POST' and 'price' in request.form):
+            if request.method == 'POST' and 'price' in request.form:
                 price = request.form['price']
                 if price != '':
                     item = Product.query.filter_by(product_id=p_id, price=price).first()
@@ -336,7 +342,7 @@ def product_updates(p_id):
                         db.session.commit()
                         msg = 'You have successfully Updated Your Product!!'
 
-            if (request.method == 'POST' and 'quantity' in request.form):
+            if request.method == 'POST' and 'quantity' in request.form:
                 quantity = request.form['quantity']
                 if quantity != '':
                     item = Product.query.filter_by(product_id=p_id, product_quantity=quantity).first()
@@ -349,7 +355,7 @@ def product_updates(p_id):
                         db.session.commit()
                         msg = 'You have successfully Updated Your Product!!'
 
-            if (request.method == 'POST' and 'img_link' in request.form):
+            if request.method == 'POST' and 'img_link' in request.form:
                 img_link = request.form['img_link']
                 if img_link != '':
                     item = Product.query.filter_by(product_id=p_id, img_link=img_link).first()
@@ -369,24 +375,22 @@ def product_updates(p_id):
 
 
 @app.route('/cart/<c_id>', methods=['GET', 'POST'])
-def cart(c_id):
+def cart():
     order = Order.query.filter_by(customer_id=session['id']).first()
 
     if order:
         items = OrderProduct.query.filter_by(order_id=order.order_id).all()
 
-        orderItems = OrderProduct.query.join(Product).all()
+        cart_items = OrderProduct.query.join(Product).all()
         ttl = 0
 
         for i in items:
             ttl += i.quantity * Product.query.get(i.product_id).price
-            #temptable.append(i.quantity)
-            #temptable.append(OrderProduct.query.get(i.product_id))
-            #orderItems.append(Product.query.get(i.product_id))
+            # temptable.append(i.quantity)
+            # temptable.append(OrderProduct.query.get(i.product_id))
+            # cart_items.append(Product.query.get(i.product_id))
 
-
-
-        return render_template('cart.html', order=order, order_id=order.order_id, orderItems=orderItems, total=ttl)
+        return render_template('cart.html', order=order, order_id=order.order_id, cart_items=cart_items, total=ttl)
     else:
         if session['usertype'] == "customer":
             results = Product.query.order_by(func.random()).limit(3).all()
@@ -406,6 +410,7 @@ def add_to_order(product_id):
         OrderProduct.add_product_to_order(order_id=order.order_id, product_id=product_id, quantity=quantity)
 
     return redirect(url_for('home'))
+
 
 @app.route('/remove_from_order/<int:product_id>', methods=['GET', 'POST'])
 def remove_from_order(product_id):
@@ -436,9 +441,11 @@ def purchase(ord_id):
 
         # Create entries in PurchaseProducts for each product associated with the order
         for op in order_products:
-            purchase_product = PurchaseProduct(purchase_id=new_purchase.purchase_id, product_id=op.product_id, quantity=op.quantity)
+            purchase_product = PurchaseProduct(purchase_id=new_purchase.purchase_id, product_id=op.product_id,
+                                               quantity=op.quantity)
             # Update Product Quantity
-            Product.query.filter_by(product_id=op.product_id).update({'product_quantity': Product.product_quantity - op.quantity})
+            Product.query.filter_by(product_id=op.product_id).update(
+                {'product_quantity': Product.product_quantity - op.quantity})
             db.session.add(purchase_product)
 
         db.session.commit()
@@ -453,11 +460,12 @@ def purchase(ord_id):
     else:
         return render_template('home.html', username=session['username'])
 
+
 @app.route('/purchase_details/<pur_id>', methods=['GET', 'POST'])
 def purchase_details(pur_id):
-    purchase = Purchase.query.get(pur_id)
+    purchase_existence = Purchase.query.get(pur_id)
 
-    if purchase:
+    if purchase_existence:
 
         purchase_items = PurchaseProduct.query.filter_by(purchase_id=pur_id).all()
         # get list of products based on the purchase_id data from purchase_items
@@ -465,21 +473,24 @@ def purchase_details(pur_id):
 
         total_price = 0
 
-        #products = []
+        # products = []
         for item in purchase_items:
-            #product = Product.query.get(item.product_id)
-            #products.append(product)
+            # product = Product.query.get(item.product_id)
+            # products.append(product)
             total_price += Product.query.get(item.product_id).price * item.quantity
 
-        return render_template('purchase_details.html', pur_id=pur_id, purchase=purchase, purchase_items=products, purcahse_total_price=total_price)
+        return render_template('purchase_details.html', pur_id=pur_id, purchase=purchase, purchase_items=products,
+                               purcahse_total_price=total_price)
     else:
         # Handle product not found, redirect to an error page, or return an error message.
         return render_template('home.html', username=session['username'])
+
 
 @app.route('/all_products', methods=['GET'])
 def all_products():
     products = Product.query.all()
     return render_template('all_products.html', all_products=products)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

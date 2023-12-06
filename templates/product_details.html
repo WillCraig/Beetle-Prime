@@ -22,10 +22,11 @@
     </div>
   <div>
         <form action="{{ url_for('add_to_order', product_id=product.product_id) }}" method="post">
-          <input class="search-input" type="number" name="quantity" value="1" min="1" max="{{product.product_quantity}}">
-          <button class="search-button" type="submit">Add to Order</button>
+            <label>
+                <input class="search-input" type="number" name="quantity" value="1" min="1" max="{{product.product_quantity}}">
+            </label>
+            <button class="search-button" type="submit">Add to Order</button>
         </form>
-</form>
   </div>
   </div>
   <div class="section">

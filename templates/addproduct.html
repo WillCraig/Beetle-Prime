@@ -9,15 +9,30 @@
 <form action="/addproduct" method = "POST">
 	<p><h2>Add Product:</h2> 
 	<div class="search-input">
-		<p>Product Name <input type="text" name = "name" /></p>
-		<p>Product Description <input type = "text" name = "description" /></p>
-		<p>Product Price <input type = "text" name = "price" /></p>
-		<p>Product Quantity <input type = "text" name = "quantity" /></p>
+		<p><label>
+            Product Name
+            <input type="text" name="name"/>
+        </label></p>
+		<p><label>
+            Description
+            <input type = "text" name = "description" />
+        </label></p>
+		<p><label>
+            Product Price
+            <input type="text" name="price"/>
+        </label></p>
+		<p><label>
+            Product Quantity
+            <input type="text" name="quantity"/>
+        </label></p>
 	</div>
 	
 
 {#    add a place where the user can enter the URL of a photo they would like to use for the product#}
-    <p>Product Photo URL <input type = "text" name = "img_link" /></p>
+    <p>Product Photo URL <label>
+        Product Photo URL
+        <input type="text" name="img_link"/>
+    </label></p>
 
 	<button class="search-button" type="submit">Add Product</button>
 </form>

@@ -7,7 +7,7 @@
     <div class="left-column">
       <h2>CART</h2>
       <div class="cart-list">
-        {% for cartItem in orderItems %}
+        {% for cartItem in cart_items %}
           <div class="product-cart">
             <img src="{{ cartItem.product.img_link }}" alt="{{ cartItem.product.name }}">
             <h2>{{ cartItem.product.name }}</h2>

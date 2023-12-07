@@ -263,12 +263,17 @@ def addproduct():
 
                 if 'img_link' in request.form:
                     img_link = request.form['img_link']
-                    product = Product(seller_id=session['id'], name=name, description=description, price=price,
+                    if img_link == '':
+                            product = Product(seller_id=session['id'], name=name, description=description, price=price, 
+                                              product_quantity=quantity, 
+                                              img_link='https://qph.cf2.quoracdn.net/main-qimg-654617264f9192ec976abe6e53356240-lq')
+                    else:
+                        product = Product(seller_id=session['id'], name=name, description=description, price=price,
                                       product_quantity=quantity, img_link=img_link)
                 else:
                     product = Product(seller_id=session['id'], name=name, description=description, price=price,
                                       product_quantity=quantity,
-                                      img_link='https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FFile%3AIcon-round-Question_mark.jpg&psig=AOvVaw3salWVD2MijoBnckBIispR&ust=1701966534581000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCMD4gMid-4IDFQAAAAAdAAAAABAk')
+                                      img_link='https://qph.cf2.quoracdn.net/main-qimg-654617264f9192ec976abe6e53356240-lq')
 
                 db.session.add(product)
                 db.session.commit()
@@ -375,7 +380,7 @@ def product_updates(p_id):
 
 
 @app.route('/cart/<c_id>', methods=['GET', 'POST'])
-def cart():
+def cart(c_id):
     order = Order.query.filter_by(customer_id=session['id']).first()
 
     if order:
